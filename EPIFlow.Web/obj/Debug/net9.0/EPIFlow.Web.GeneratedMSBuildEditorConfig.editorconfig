@@ -1,0 +1,153 @@
+is_global = true
+build_property.TargetFramework = net9.0
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = EPIFlow.Web
+build_property.RootNamespace = EPIFlow.Web
+build_property.ProjectDir = /Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Areas/Identity/Pages/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvX0xvZ2luUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Areas/Master/Views/Dashboard/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvTWFzdGVyL1ZpZXdzL0Rhc2hib2FyZC9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Areas/Master/Views/Tenants/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvTWFzdGVyL1ZpZXdzL1RlbmFudHMvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Areas/Master/Views/Tenants/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvTWFzdGVyL1ZpZXdzL1RlbmFudHMvRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Areas/Master/Views/Tenants/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvTWFzdGVyL1ZpZXdzL1RlbmFudHMvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Areas/Master/Views/Tenants/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvTWFzdGVyL1ZpZXdzL1RlbmFudHMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Areas/Master/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvTWFzdGVyL1ZpZXdzL19WaWV3SW1wb3J0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Areas/Master/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvTWFzdGVyL1ZpZXdzL19WaWV3U3RhcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Dashboard/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGFzaGJvYXJkL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Deliveries/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVsaXZlcmllcy9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Deliveries/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVsaXZlcmllcy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Deliveries/Return.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVsaXZlcmllcy9SZXR1cm4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Employees/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWVzL0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Employees/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWVzL0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Employees/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWVzL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Employees/_Form.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWVzL19Gb3JtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/EpiTypes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRXBpVHlwZXMvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/EpiTypes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRXBpVHlwZXMvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/EpiTypes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRXBpVHlwZXMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/EpiTypes/_Form.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRXBpVHlwZXMvX0Zvcm0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Inventory/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSW52ZW50b3J5L0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Inventory/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSW52ZW50b3J5L0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Reports/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Mb2dpblBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-iesrxitp2z

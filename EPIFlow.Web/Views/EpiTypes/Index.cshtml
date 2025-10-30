@@ -1,0 +1,83 @@
+@model EpiTypeIndexViewModel
+@{
+    ViewData["Title"] = "Tipos de EPI";
+}
+
+<div class="card shadow-sm">
+    <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <form method="get" class="d-flex align-items-center gap-2">
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="search" name="search" value="@Model.SearchTerm" class="form-control" placeholder="Buscar por código ou descrição" />
+            </div>
+            <button type="submit" class="btn btn-outline-secondary">Filtrar</button>
+        </form>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> Novo EPI
+        </a>
+    </div>
+    <div class="card-body p-0">
+        @if (Model.EpiTypes.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descrição</th>
+                            <th>Categoria</th>
+                            <th class="text-center">Validade (meses)</th>
+                            <th class="text-center">Estoque</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var epi in Model.EpiTypes)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@epi.Code</td>
+                                <td>@epi.Description</td>
+                                <td>@epi.Category.ToString()</td>
+                                <td class="text-center">@epi.ValidityInMonths</td>
+                                <td class="text-center">
+                                    <span class="badge text-bg-light border">@epi.QuantityAvailable / @epi.MinimumQuantity</span>
+                                </td>
+                                <td class="text-center">
+                                    @if (epi.IsActive)
+                                    {
+                                        <span class="badge bg-success badge-status">Ativo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary badge-status">Inativo</span>
+                                    }
+                                </td>
+                                <td class="text-end">
+                                    <div class="btn-group">
+                                        <a asp-action="Edit" asp-route-id="@epi.Id" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-pen"></i>
+                                        </a>
+                                        <form asp-action="ToggleStatus" asp-route-id="@epi.Id" method="post" class="d-inline" data-confirm="Deseja alterar o status deste EPI?">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="isActive" value="@(!epi.IsActive)" />
+                                            <button type="submit" class="btn btn-sm btn-outline-warning" title="Alterar status">
+                                                <i class="fas @(epi.IsActive ? "fa-ban" : "fa-check")"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-4 text-center text-muted">
+                Nenhum EPI encontrado.
+            </div>
+        }
+    </div>
+</div>

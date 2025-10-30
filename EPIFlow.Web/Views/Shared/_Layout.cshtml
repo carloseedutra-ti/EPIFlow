@@ -1,0 +1,223 @@
+﻿@using System
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var userName = User?.Identity?.IsAuthenticated == true
+        ? (User.Identity?.Name ?? "Usuário")
+        : "Acesso";
+    var tenantClaim = User?.FindFirst("tenant_id")?.Value ?? User?.FindFirst("tenant")?.Value;
+    var isPlatformAdmin = Guid.TryParse(tenantClaim, out var tenantGuid) && tenantGuid == Guid.Empty;
+}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - EPIFlow</title>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0/dist/css/adminlte.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/%40fortawesome/fontawesome-free@6.5.2/css/all.min.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0/dist/css/adminlte.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/%40fortawesome/fontawesome-free@6.5.2/css/all.min.css" />
+    </environment>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+    <div class="app-wrapper">
+        <nav class="app-header navbar navbar-expand bg-body">
+            <div class="container-fluid">
+                <button class="btn btn-link px-2 text-body-emphasis" data-toggle-sidebar aria-label="Alternar menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a class="navbar-brand ms-2 fw-semibold text-primary" asp-area="@(isPlatformAdmin ? "Master" : "")" asp-controller="Dashboard" asp-action="Index">
+                    <i class="fas fa-hard-hat me-2"></i>EPIFlow
+                </a>
+                <div class="ms-auto d-flex align-items-center">
+                    @if (User?.Identity?.IsAuthenticated == true)
+                    {
+                        <div class="dropdown">
+                            <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="me-2 text-end">
+                                    <small class="d-block text-muted">Bem-vindo</small>
+                                    <span class="fw-semibold">@userName</span>
+                                </span>
+                                <span class="avatar bg-primary text-white fw-semibold">@userName.FirstOrDefault()</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li>
+                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                                        <i class="fas fa-user-cog me-2"></i> Minha conta
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li>
+                                    <form method="post" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt me-2"></i> Sair
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">
+                            <i class="fas fa-sign-in-alt me-1"></i> Entrar
+                        </a>
+                    }
+                </div>
+            </div>
+        </nav>
+
+        <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="light">
+            <div class="sidebar-brand">
+                <a asp-area="@(isPlatformAdmin ? "Master" : "")" asp-controller="Dashboard" asp-action="Index" class="brand-link">
+                    <img src="~/favicon.ico" alt="EPIFlow" class="brand-image opacity-75">
+                    <span class="brand-text fw-semibold">EPIFlow</span>
+                </a>
+            </div>
+            <div class="sidebar-wrapper">
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-lte-toggle="treeview" role="menu">
+                        @if (isPlatformAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "Dashboard" && ViewContext.RouteData.Values["area"]?.ToString() == "Master" ? "active" : string.Empty)" asp-area="Master" asp-controller="Dashboard" asp-action="Index">
+                                    <i class="nav-icon fas fa-chart-pie"></i>
+                                    <p>Painel</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "Tenants" ? "active" : string.Empty)" asp-area="Master" asp-controller="Tenants" asp-action="Index">
+                                    <i class="nav-icon fas fa-building"></i>
+                                    <p>Empresas</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "Dashboard" ? "active" : string.Empty)" asp-controller="Dashboard" asp-action="Index">
+                                    <i class="nav-icon fas fa-chart-line"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "Employees" ? "active" : string.Empty)" asp-controller="Employees" asp-action="Index">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>Colaboradores</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "EpiTypes" ? "active" : string.Empty)" asp-controller="EpiTypes" asp-action="Index">
+                                    <i class="nav-icon fas fa-helmet-safety"></i>
+                                    <p>Tipos de EPI</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "Inventory" ? "active" : string.Empty)" asp-controller="Inventory" asp-action="Index">
+                                    <i class="nav-icon fas fa-boxes-stacked"></i>
+                                    <p>Estoque</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "Deliveries" ? "active" : string.Empty)" asp-controller="Deliveries" asp-action="Index">
+                                    <i class="nav-icon fas fa-truck-loading"></i>
+                                    <p>Entregas</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "Reports" ? "active" : string.Empty)" asp-controller="Reports" asp-action="Index">
+                                    <i class="nav-icon fas fa-file-pdf"></i>
+                                    <p>Relatórios</p>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <main class="app-main">
+            <div class="app-content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="mb-0">@ViewData["Title"]</h3>
+                        </div>
+                        <div class="col-auto text-muted">
+                            <small>@controller / @action</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <div class="float-end d-none d-sm-inline">
+                Controle completo de EPIs
+            </div>
+            <strong>&copy; @DateTime.Now.Year - EPIFlow.</strong> Todos os direitos reservados.
+        </footer>
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0/dist/js/adminlte.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0/dist/js/adminlte.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </environment>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @{
+        var successJson = System.Text.Json.JsonSerializer.Serialize(TempData["Success"]);
+        var errorJson = System.Text.Json.JsonSerializer.Serialize(TempData["Error"]);
+    }
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const successMessage = @Html.Raw(successJson);
+            const errorMessage = @Html.Raw(errorJson);
+
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sucesso',
+                    text: successMessage
+                });
+            }
+
+            if (errorMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Atenção',
+                    text: errorMessage
+                });
+            }
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

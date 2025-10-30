@@ -1,0 +1,58 @@
+@model InventoryIndexViewModel
+@{
+    ViewData["Title"] = "Controle de estoque";
+}
+
+<div class="card shadow-sm">
+    <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <form method="get" class="d-flex align-items-center gap-2">
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="search" name="search" value="@Model.SearchTerm" class="form-control" placeholder="Buscar por código ou descrição" />
+            </div>
+            <button type="submit" class="btn btn-outline-secondary">Filtrar</button>
+        </form>
+    </div>
+    <div class="card-body p-0">
+        @if (Model.Items.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descrição</th>
+                            <th class="text-center">Quantidade</th>
+                            <th class="text-center">Mínimo</th>
+                            <th>Localização</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr class="@(item.IsBelowMinimum ? "table-danger" : string.Empty)">
+                                <td class="fw-semibold">@item.EpiCode</td>
+                                <td>@item.EpiDescription</td>
+                                <td class="text-center fw-semibold @((item.IsBelowMinimum) ? "text-danger" : string.Empty)">@item.QuantityAvailable</td>
+                                <td class="text-center">@item.MinimumQuantity</td>
+                                <td>@item.Location</td>
+                                <td class="text-end">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i> Detalhes
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-4 text-center text-muted">
+                Nenhum item de estoque encontrado.
+            </div>
+        }
+    </div>
+</div>

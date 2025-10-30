@@ -1,0 +1,79 @@
+@model DeliveryIndexViewModel
+@{
+    ViewData["Title"] = "Entregas de EPIs";
+}
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-5">
+                <label for="SelectedEmployeeId" class="form-label">Colaborador</label>
+                <select id="SelectedEmployeeId" name="employeeId" class="form-select" asp-items="Model.Employees"></select>
+            </div>
+            <div class="col-md-5">
+                <label for="SelectedEpiTypeId" class="form-label">Tipo de EPI</label>
+                <select id="SelectedEpiTypeId" name="epiTypeId" class="form-select" asp-items="Model.EpiTypes"></select>
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-fill"><i class="fas fa-filter me-1"></i> Filtrar</button>
+                <a asp-action="Index" class="btn btn-outline-secondary" title="Limpar filtros"><i class="fas fa-rotate"></i></a>
+            </div>
+        </form>
+    </div>
+    <div class="card-body p-0">
+        @if (Model.Deliveries.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Colaborador</th>
+                            <th>Responsável</th>
+                            <th>Itens</th>
+                            <th class="text-center">Quantidade</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var delivery in Model.Deliveries)
+                        {
+                            var totalQuantity = delivery.Items.Sum(item => item.Quantity);
+                            <tr>
+                                <td>@delivery.DeliveryDate.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    <div class="fw-semibold">@delivery.EmployeeName</div>
+                                    <small class="text-muted">@delivery.DeliveryNumber</small>
+                                </td>
+                                <td>@delivery.ResponsibleName</td>
+                                <td>
+                                    @foreach (var item in delivery.Items)
+                                    {
+                                        <span class="badge text-bg-light border me-1 mb-1">@item.EpiCode (@item.Quantity)</span>
+                                    }
+                                </td>
+                                <td class="text-center fw-semibold">@totalQuantity</td>
+                                <td class="text-end">
+                                    <a asp-action="Return" asp-route-id="@delivery.Id" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-undo"></i> Devolução
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-4 text-center text-muted">
+                Nenhuma entrega registrada.
+            </div>
+        }
+    </div>
+    <div class="card-footer text-end">
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-truck-loading me-1"></i> Registrar entrega
+        </a>
+    </div>
+</div>

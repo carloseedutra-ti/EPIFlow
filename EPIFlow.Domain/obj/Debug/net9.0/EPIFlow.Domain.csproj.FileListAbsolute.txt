@@ -1,0 +1,11 @@
+/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/bin/Debug/net9.0/EPIFlow.Domain.deps.json
+/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/bin/Debug/net9.0/EPIFlow.Domain.dll
+/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/bin/Debug/net9.0/EPIFlow.Domain.pdb
+/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/obj/Debug/net9.0/EPIFlow.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/obj/Debug/net9.0/EPIFlow.Domain.AssemblyInfoInputs.cache
+/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/obj/Debug/net9.0/EPIFlow.Domain.AssemblyInfo.cs
+/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/obj/Debug/net9.0/EPIFlow.Domain.csproj.CoreCompileInputs.cache
+/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/obj/Debug/net9.0/EPIFlow.Domain.dll
+/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/obj/Debug/net9.0/refint/EPIFlow.Domain.dll
+/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/obj/Debug/net9.0/EPIFlow.Domain.pdb
+/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/obj/Debug/net9.0/ref/EPIFlow.Domain.dll

@@ -1,0 +1,42 @@
+@model EmployeeFormViewModel
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="Name" class="form-label form-required"></label>
+        <input asp-for="Name" class="form-control" autofocus />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="Cpf" class="form-label form-required"></label>
+        <input asp-for="Cpf" class="form-control" />
+        <span asp-validation-for="Cpf" class="text-danger"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="RegistrationNumber" class="form-label form-required"></label>
+        <input asp-for="RegistrationNumber" class="form-control" />
+        <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="JobTitle" class="form-label"></label>
+        <input asp-for="JobTitle" class="form-control" />
+        <span asp-validation-for="JobTitle" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Department" class="form-label"></label>
+        <input asp-for="Department" class="form-control" />
+        <span asp-validation-for="Department" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="AdmissionDate" class="form-label"></label>
+        <input asp-for="AdmissionDate" class="form-control" />
+        <span asp-validation-for="AdmissionDate" class="text-danger"></span>
+    </div>
+    @if (Model.Id.HasValue)
+    {
+        <div class="col-md-4">
+            <label asp-for="Status" class="form-label"></label>
+            <select asp-for="Status" asp-items="Html.GetEnumSelectList<EmployeeStatus>()" class="form-select"></select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+    }
+</div>

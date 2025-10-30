@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootstrap@5.3.3",
+      "destination": "EPIFlow.Web/wwwroot/lib/bootstrap"
+    },
+    {
+      "library": "jquery@3.7.1",
+      "destination": "EPIFlow.Web/wwwroot/lib/jquery"
+    },
+    {
+      "library": "admin-lte@4.0.0",
+      "destination": "EPIFlow.Web/wwwroot/lib/admin-lte"
+    },
+    {
+      "library": "sweetalert2@11.12.4",
+      "destination": "EPIFlow.Web/wwwroot/lib/sweetalert2"
+    },
+    {
+      "library": "@fortawesome/fontawesome-free@6.5.2",
+      "destination": "EPIFlow.Web/wwwroot/lib/fontawesome"
+    }
+  ]
+}

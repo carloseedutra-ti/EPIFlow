@@ -1,0 +1,141 @@
+@model InventoryDetailsViewModel
+@{
+    ViewData["Title"] = $"Estoque - {Model.EpiCode}";
+    var movementForm = ViewBag.MovementForm as StockMovementFormViewModel ?? new StockMovementFormViewModel { InventoryItemId = Model.Id };
+    var movementOptions = Html.GetEnumSelectList<StockMovementType>()
+        .Select(option =>
+        {
+            if (Enum.TryParse<StockMovementType>(option.Value, out var value))
+            {
+                option.Selected = value == movementForm.MovementType;
+            }
+            return option;
+        })
+        .ToList();
+}
+
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="card shadow-sm h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Detalhes do item</h5>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left me-1"></i> Voltar
+                </a>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Código</dt>
+                    <dd class="col-sm-8">@Model.EpiCode</dd>
+                    <dt class="col-sm-4">Descrição</dt>
+                    <dd class="col-sm-8">@Model.EpiDescription</dd>
+                    <dt class="col-sm-4">Quantidade disponível</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge @(Model.QuantityAvailable <= Model.MinimumQuantity ? "text-bg-danger" : "text-bg-success")">
+                            @Model.QuantityAvailable
+                        </span>
+                    </dd>
+                    <dt class="col-sm-4">Quantidade mínima</dt>
+                    <dd class="col-sm-8">@Model.MinimumQuantity</dd>
+                    <dt class="col-sm-4">Localização</dt>
+                    <dd class="col-sm-8">@Model.Location</dd>
+                    <dt class="col-sm-4">Último inventário</dt>
+                    <dd class="col-sm-8">@(Model.LastInventoryDate?.ToString("dd/MM/yyyy") ?? "-")</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card shadow-sm h-100">
+            <div class="card-header">
+                <h5 class="mb-0">Registrar movimentação</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="RegisterMovement" method="post" novalidate>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="InventoryItemId" value="@Model.Id" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                    <div class="mb-3">
+                        <label for="MovementType" class="form-label form-required">Tipo</label>
+                        <select id="MovementType" name="MovementType" class="form-select">
+                            <option value="">Selecione</option>
+                            @foreach (var option in movementOptions)
+                            {
+                                <option value="@option.Value" selected="@option.Selected">@option.Text</option>
+                            }
+                        </select>
+                        @Html.ValidationMessage("MovementType", null, new { @class = "text-danger" })
+                    </div>
+                    <div class="mb-3">
+                        <label for="Quantity" class="form-label form-required">Quantidade</label>
+                        <input type="number" id="Quantity" name="Quantity" value="@(movementForm.Quantity == 0 ? 1 : movementForm.Quantity)" class="form-control" min="1" />
+                        @Html.ValidationMessage("Quantity", null, new { @class = "text-danger" })
+                    </div>
+                    <div class="mb-3">
+                        <label for="Reference" class="form-label">Referência</label>
+                        <input type="text" id="Reference" name="Reference" value="@movementForm.Reference" class="form-control" />
+                        @Html.ValidationMessage("Reference", null, new { @class = "text-danger" })
+                    </div>
+                    <div class="mb-3">
+                        <label for="Notes" class="form-label">Observações</label>
+                        <textarea id="Notes" name="Notes" rows="3" class="form-control">@movementForm.Notes</textarea>
+                        @Html.ValidationMessage("Notes", null, new { @class = "text-danger" })
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-save me-1"></i> Registrar movimentação
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mt-3">
+    <div class="card-header">
+        <h5 class="mb-0">Movimentações recentes</h5>
+    </div>
+    <div class="card-body p-0">
+        @if (Model.RecentMovements.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>Quantidade</th>
+                            <th>Referência</th>
+                            <th>Observações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var movement in Model.RecentMovements)
+                        {
+                            <tr>
+                                <td>@movement.MovementDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    <span class="badge @(movement.MovementType == StockMovementType.Entry ? "bg-success" : movement.MovementType == StockMovementType.Exit ? "bg-danger" : "bg-warning text-dark")">
+                                        @movement.MovementType.ToString()
+                                    </span>
+                                </td>
+                                <td>@movement.Quantity</td>
+                                <td>@movement.Reference</td>
+                                <td>@movement.Notes</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-4 text-center text-muted">
+                Nenhuma movimentação registrada.
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,85 @@
+@model EmployeeIndexViewModel
+@{
+    ViewData["Title"] = "Colaboradores";
+}
+
+<div class="card shadow-sm">
+    <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <form method="get" class="d-flex align-items-center gap-2">
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="search" name="search" value="@Model.SearchTerm" class="form-control" placeholder="Buscar por nome, CPF ou matrícula" />
+            </div>
+            <button type="submit" class="btn btn-outline-secondary">
+                Filtrar
+            </button>
+        </form>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> Novo colaborador
+        </a>
+    </div>
+    <div class="card-body p-0">
+        @if (Model.Employees.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Matrícula</th>
+                            <th>Cargo/Setor</th>
+                            <th>Admissão</th>
+                            <th class="text-center">Situação</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var employee in Model.Employees)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@employee.Name</td>
+                                <td>@employee.Cpf</td>
+                                <td>@employee.RegistrationNumber</td>
+                                <td>
+                                    <div>@employee.JobTitle</div>
+                                    <small class="text-muted">@employee.Department</small>
+                                </td>
+                                <td>@employee.AdmissionDate.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    @if (employee.Status == EmployeeStatus.Active)
+                                    {
+                                        <span class="badge bg-success badge-status">Ativo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary badge-status">Inativo</span>
+                                    }
+                                </td>
+                                <td class="text-end">
+                                    <div class="btn-group">
+                                        <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-pen"></i>
+                                        </a>
+                                        <form asp-action="Delete" asp-route-id="@employee.Id" method="post" data-confirm="Deseja remover este colaborador?" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-4 text-center text-muted">
+                Nenhum colaborador encontrado.
+            </div>
+        }
+    </div>
+</div>

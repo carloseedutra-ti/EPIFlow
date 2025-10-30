@@ -1,0 +1,43 @@
+@model EpiTypeFormViewModel
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <label asp-for="Code" class="form-label form-required"></label>
+        <input asp-for="Code" class="form-control" />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+    <div class="col-md-8">
+        <label asp-for="Description" class="form-label form-required"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Category" class="form-label"></label>
+        <select asp-for="Category" asp-items="Html.GetEnumSelectList<EpiCategory>()" class="form-select"></select>
+        <span asp-validation-for="Category" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="ValidityInMonths" class="form-label"></label>
+        <input asp-for="ValidityInMonths" class="form-control" />
+        <span asp-validation-for="ValidityInMonths" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="CaNumber" class="form-label"></label>
+        <input asp-for="CaNumber" class="form-control" />
+        <span asp-validation-for="CaNumber" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="MinimumQuantity" class="form-label"></label>
+        <input asp-for="MinimumQuantity" class="form-control" />
+        <span asp-validation-for="MinimumQuantity" class="text-danger"></span>
+    </div>
+    @if (Model.Id.HasValue)
+    {
+        <div class="col-md-4">
+            <div class="form-check mt-4">
+                <input asp-for="IsActive" class="form-check-input" />
+                <label asp-for="IsActive" class="form-check-label"></label>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,322 @@
+@model TenantIndexViewModel
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Empresas";
+    var antiForgeryToken = Antiforgery.GetAndStoreTokens(ViewContext.HttpContext).RequestToken;
+    var createTenantUrl = Url.Action("Create", "Tenants", new { area = "Master" }) ?? string.Empty;
+    var requiredFieldsJson = JsonSerializer.Serialize(new[]
+    {
+        new { field = "Name", label = "Nome da empresa" },
+        new { field = "Document", label = "CNPJ" },
+        new { field = "ResponsibleName", label = "Responsável" },
+        new { field = "ResponsibleEmail", label = "E-mail do responsável" },
+        new { field = "Address", label = "Endereço" },
+        new { field = "City", label = "Cidade" },
+        new { field = "State", label = "Estado" },
+        new { field = "PostalCode", label = "CEP" },
+        new { field = "Country", label = "País" },
+        new { field = "AdminName", label = "Nome do administrador" },
+        new { field = "AdminEmail", label = "E-mail do administrador" },
+        new { field = "AdminPassword", label = "Senha de acesso" }
+    });
+    var emailFieldsJson = JsonSerializer.Serialize(new[]
+    {
+        new { field = "ResponsibleEmail", label = "E-mail do responsável" },
+        new { field = "AdminEmail", label = "E-mail do administrador" }
+    });
+}
+
+<input type="hidden" id="master-af-token" value="@antiForgeryToken" />
+
+<div class="card shadow-sm">
+    <div class="card-header d-flex flex-wrap gap-2 align-items-center justify-content-between">
+        <form method="get" class="d-flex gap-2 flex-wrap align-items-center">
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="search" name="search" value="@Model.SearchTerm" class="form-control" placeholder="Buscar por nome, razão social ou e-mail" />
+            </div>
+            <button type="submit" class="btn btn-outline-secondary">Filtrar</button>
+            <a asp-action="Index" class="btn btn-light">Limpar</a>
+        </form>
+        <button type="button" class="btn btn-primary" data-master-create-tenant>
+            <i class="fas fa-plus me-1"></i> Nova empresa
+        </button>
+    </div>
+    <div class="card-body p-0">
+        @if (Model.Tenants.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-center">Logo</th>
+                            <th>Nome</th>
+                            <th>CNPJ</th>
+                            <th>E-mail do responsável</th>
+                            <th class="text-center">Colaboradores</th>
+                            <th class="text-center">Limite</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var tenant in Model.Tenants)
+                        {
+                            <tr>
+                                <td class="text-center" style="width: 70px;">
+                                    @if (!string.IsNullOrWhiteSpace(tenant.LogoPath))
+                                    {
+                                        <img src="@tenant.LogoPath" alt="Logo de @tenant.Name" class="rounded" style="max-height:50px; max-width:60px;" />
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">—</span>
+                                    }
+                                </td>
+                                <td class="fw-semibold">@tenant.Name</td>
+                                <td>@tenant.Cnpj</td>
+                                <td>@tenant.ResponsibleEmail</td>
+                                <td class="text-center">@tenant.ActiveEmployees</td>
+                                <td class="text-center">@tenant.EmployeeLimit</td>
+                                <td class="text-center">
+                                    @if (!tenant.IsActive)
+                                    {
+                                        <span class="badge bg-danger">Bloqueada</span>
+                                    }
+                                    else if (tenant.IsSuspended)
+                                    {
+                                        <span class="badge bg-warning text-dark">Suspensa</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">Ativa</span>
+                                    }
+                                </td>
+                                <td class="text-end">
+                                    <a asp-action="Details" asp-route-id="@tenant.Id" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-4 text-center text-muted">
+                Nenhuma empresa encontrada.
+            </div>
+        }
+    </div>
+</div>
+
+<template id="template-create-tenant">
+    <form id="modal-create-tenant" class="text-start" enctype="multipart/form-data">
+        <input type="hidden" name="__RequestVerificationToken" value="@antiForgeryToken" />
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Nome da empresa *</label>
+                <input class="form-control" name="Name" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">CNPJ *</label>
+                <input class="form-control" name="Document" required />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Telefone</label>
+                <input class="form-control" name="PhoneNumber" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Responsável *</label>
+                <input class="form-control" name="ResponsibleName" required />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">E-mail do responsável *</label>
+                <input class="form-control" name="ResponsibleEmail" type="email" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Endereço *</label>
+                <input class="form-control" name="Address" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Complemento</label>
+                <input class="form-control" name="AddressComplement" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Cidade *</label>
+                <input class="form-control" name="City" required />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Estado *</label>
+                <input class="form-control" name="State" required />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">CEP *</label>
+                <input class="form-control" name="PostalCode" required />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">País *</label>
+                <input class="form-control" name="Country" value="Brasil" required />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Limite colaboradores *</label>
+                <input class="form-control" name="EmployeeLimit" type="number" value="10" min="1" required />
+            </div>
+            <div class="col-md-12">
+                <label class="form-label">Notas internas</label>
+                <textarea class="form-control" name="Notes" rows="2"></textarea>
+            </div>
+            <div class="col-md-12">
+                <label class="form-label">Logotipo</label>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="border rounded p-2" style="width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;">
+                        <img data-logo-preview class="img-fluid" alt="Pré-visualização" style="max-height: 100px;" />
+                    </div>
+                    <input class="form-control" name="Logo" type="file" accept="image/*" />
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-3" />
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Nome do administrador *</label>
+                <input class="form-control" name="AdminName" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">E-mail do administrador *</label>
+                <input class="form-control" name="AdminEmail" type="email" required />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Senha de acesso *</label>
+                <input class="form-control" name="AdminPassword" type="password" required />
+            </div>
+        </div>
+    </form>
+</template>
+
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const createTenantButton = document.querySelector('[data-master-create-tenant]');
+            if (!createTenantButton) {
+                return;
+            }
+
+            createTenantButton.addEventListener('click', async () => {
+                const formHtml = document.getElementById('template-create-tenant').innerHTML;
+
+                const { value: formData } = await Swal.fire({
+                    title: 'Nova empresa',
+                    html: formHtml,
+                    width: '60rem',
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Salvar',
+                    cancelButtonText: 'Cancelar',
+                    DidOpen: () => {
+                        const form = document.querySelector('#modal-create-tenant');
+                        if (!form) return;
+                        form.querySelector('input[name="Name"]').focus();
+
+                        const preview = form.querySelector('[data-logo-preview]');
+                        const fileInput = form.querySelector('input[name="Logo"]');
+                        if (fileInput && preview) {
+                            fileInput.addEventListener('change', () => {
+                                if (fileInput.files && fileInput.files[0]) {
+                                    const objectUrl = URL.createObjectURL(fileInput.files[0]);
+                                    preview.setAttribute('src', objectUrl);
+                                } else {
+                                    preview.removeAttribute('src');
+                                }
+                            });
+                        }
+                    },
+                    preConfirm: () => {
+                        const form = document.querySelector('#modal-create-tenant');
+                        if (!form) {
+                            return null;
+                        }
+
+                        const data = new FormData(form);
+                       
+                        const getValue = field => {
+                            const raw = data.get(field);
+                            return raw === null ? '' : raw.toString().trim();
+                        };
+
+                        const requiredFields = JSON.parse('@Html.Raw(requiredFieldsJson)');
+                        const missing = requiredFields
+                            .filter(({ field }) => !getValue(field))
+                            .map(({ label }) => label);
+
+                        if (missing.length > 0) {
+                            Swal.showValidationMessage(`Preencha os campos obrigatórios: ${missing.join(', ')}.`);
+                            return null;
+                        }
+
+                        const emailFields = JSON.parse('@Html.Raw(emailFieldsJson)');
+                        const emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+
+                        const invalidEmails = emailFields
+                            .filter(({ field }) => !emailPattern.test(getValue(field)))
+                            .map(({ label }) => label);
+
+                        if (invalidEmails.length > 0) {
+                            Swal.showValidationMessage(`Informe endereços de e-mail válidos para: ${invalidEmails.join(', ')}.`);
+                            return null;
+                        }
+
+                        const limitValue = Number(getValue('EmployeeLimit'));
+                        if (Number.isNaN(limitValue) || limitValue <= 0) {
+                            Swal.showValidationMessage('Informe um limite de colaboradores válido.');
+                            return null;
+                        }
+
+                        return data;
+                    }
+                });
+
+                if (!formData) {
+                    return;
+                }
+
+                try {
+                    const response = await fetch('@createTenantUrl', {
+                        method: 'POST',
+                        headers: {
+                            'RequestVerificationToken': document.getElementById('master-af-token').value
+                        },
+                        body: formData
+                    });
+
+                    const payload = await response.json().catch(() => null);
+
+                    if (!response.ok || (payload && payload.success === false)) {
+                        const errorMessage = payload?.error || 'Erro ao criar empresa.';
+                        throw new Error(errorMessage);
+                    }
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Empresa criada',
+                        text: 'Empresa e administrador cadastrados com sucesso.'
+                    }).then(() => window.location.reload());
+                }
+                catch (error) {
+                    const message = (error?.message ?? 'Não foi possível criar a empresa.').replace(/\n/g, '<br/>');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        html: message
+                    });
+                }
+            });
+        });
+    </script>
+}

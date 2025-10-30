@@ -1,0 +1,119 @@
+@model EPIFlow.Application.Tenants.DTOs.TenantUpdateDto
+@{
+    ViewData["Title"] = "Editar empresa";
+}
+
+<div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-pen me-2"></i>Editar dados da empresa</h5>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-arrow-left me-1"></i> Voltar
+        </a>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Name" class="form-label form-required">Nome da empresa</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Document" class="form-label">CNPJ</label>
+                    <input asp-for="Document" class="form-control" />
+                    <span asp-validation-for="Document" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="PhoneNumber" class="form-label">Telefone</label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="ResponsibleName" class="form-label">Responsável</label>
+                    <input asp-for="ResponsibleName" class="form-control" />
+                    <span asp-validation-for="ResponsibleName" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="ResponsibleEmail" class="form-label">E-mail do responsável</label>
+                    <input asp-for="ResponsibleEmail" class="form-control" />
+                    <span asp-validation-for="ResponsibleEmail" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Address" class="form-label">Endereço</label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="AddressComplement" class="form-label">Complemento</label>
+                    <input asp-for="AddressComplement" class="form-control" />
+                    <span asp-validation-for="AddressComplement" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="City" class="form-label">Cidade</label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="State" class="form-label">Estado</label>
+                    <input asp-for="State" class="form-control" />
+                    <span asp-validation-for="State" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="PostalCode" class="form-label">CEP</label>
+                    <input asp-for="PostalCode" class="form-control" />
+                    <span asp-validation-for="PostalCode" class="text-danger"></span>
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Country" class="form-label">País</label>
+                    <input asp-for="Country" class="form-control" />
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="EmployeeLimit" class="form-label form-required">Limite de colaboradores</label>
+                    <input asp-for="EmployeeLimit" class="form-control" />
+                    <span asp-validation-for="EmployeeLimit" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="SubscriptionExpiresOnUtc" class="form-label">Validade da assinatura</label>
+                    <input asp-for="SubscriptionExpiresOnUtc" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="SubscriptionExpiresOnUtc" class="text-danger"></span>
+                </div>
+                <div class="col-md-12">
+                    <label asp-for="Notes" class="form-label"></label>
+                    <textarea asp-for="Notes" rows="3" class="form-control"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-3">
+                    <div class="form-check form-switch">
+                        <input asp-for="IsActive" class="form-check-input" />
+                        <label asp-for="IsActive" class="form-check-label">Ativa</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-check form-switch">
+                        <input asp-for="IsSuspended" class="form-check-input" />
+                        <label asp-for="IsSuspended" class="form-check-label">Suspensa</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex justify-content-end gap-2">
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-light">Cancelar</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Salvar alterações
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

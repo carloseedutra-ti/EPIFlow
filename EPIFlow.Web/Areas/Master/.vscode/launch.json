@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "coreclr",
+      "request": "launch",
+      "name": "Launch EPIFlow.Web",
+      "program": "${workspaceFolder}/${input:programPath}",
+      "cwd": "${workspaceFolder}/EPIFlow.Web",
+      "preLaunchTask": "build",
+      "args": [],
+      "stopAtEntry": false,
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "programPath",
+      "type": "promptString",
+      "description": "Path to the built EPIFlow.Web DLL (e.g. EPIFlow.Web/bin/Debug/net9.0/EPIFlow.Web.dll)"
+    }
+  ]
+}

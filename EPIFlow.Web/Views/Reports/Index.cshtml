@@ -1,0 +1,79 @@
+@model ReportsViewModel
+@{
+    ViewData["Title"] = "Relatórios";
+}
+
+<div class="row g-3">
+    <div class="col-12 col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-warehouse me-2"></i>Estoque atual</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Exporta o panorama completo do estoque, destacando itens com quantidade abaixo do mínimo.</p>
+            </div>
+            <div class="card-footer text-end">
+                <form asp-action="DownloadStockReport" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-file-download me-1"></i> Baixar PDF
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-people-carry me-2"></i>Entregas por colaborador</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Seleciona um colaborador para gerar o histórico completo de entregas e controle de EPIs em posse.</p>
+                <form asp-action="DownloadDeliveriesReport" method="post" class="mt-3">
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label for="SelectedEmployeeId" class="form-label">Colaborador</label>
+                        <select id="SelectedEmployeeId" name="employeeId" class="form-select" asp-items="Model.Employees">
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-file-download me-1"></i> Baixar PDF
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-warning">
+                <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>EPIs vencidos</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Lista EPIs vencidos ou próximos do vencimento, permitindo ação preventiva junto aos colaboradores.</p>
+                <form asp-action="DownloadExpiredReport" method="post" class="row g-2">
+                    @Html.AntiForgeryToken()
+                    <div class="col-12">
+                        <label asp-for="ReferenceDate" class="form-label">Data de referência</label>
+                        <input asp-for="ReferenceDate" class="form-control" />
+                        <span asp-validation-for="ReferenceDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="ThresholdInDays" class="form-label">Dias para alerta</label>
+                        <input asp-for="ThresholdInDays" class="form-control" min="0" />
+                        <span asp-validation-for="ThresholdInDays" class="text-danger"></span>
+                    </div>
+                    <div class="col-12 text-end mt-2">
+                        <button type="submit" class="btn btn-warning text-white">
+                            <i class="fas fa-file-download me-1"></i> Baixar PDF
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,190 @@
+@model TenantDetailDto
+@{
+    ViewData["Title"] = Model.Name;
+    var paymentModel = (TenantPaymentCreateDto)ViewBag.PaymentModel;
+}
+
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+    <div>
+        <h2 class="mb-0">@Model.Name</h2>
+        <small class="text-muted">Ativa desde @Model.ActiveSinceUtc.ToLocalTime().ToString("dd/MM/yyyy")</small>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">
+            <i class="fas fa-pen me-1"></i> Editar
+        </a>
+        <form asp-action="ToggleActive" asp-route-id="@Model.Id" method="post" data-confirm="Deseja alterar o status desta empresa?">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="isActive" value="@(Model.IsActive ? "false" : "true")" />
+            <button type="submit" class="btn @(Model.IsActive ? "btn-outline-danger" : "btn-success")">
+                <i class="fas @(Model.IsActive ? "fa-ban" : "fa-check")"></i>
+                @(Model.IsActive ? "Bloquear" : "Reativar")
+            </button>
+        </form>
+        <form asp-action="ToggleSuspension" asp-route-id="@Model.Id" method="post" data-confirm="Deseja alterar a suspensão desta empresa?">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="isSuspended" value="@(!Model.IsSuspended)" />
+            <button type="submit" class="btn @(Model.IsSuspended ? "btn-outline-success" : "btn-outline-warning")">
+                <i class="fas @(Model.IsSuspended ? "fa-play" : "fa-pause")"></i>
+                @(Model.IsSuspended ? "Retomar" : "Suspender")
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-12 col-xl-4">
+        @if (!string.IsNullOrWhiteSpace(Model.LogoPath))
+        {
+            <div class="card shadow-sm mb-3">
+                <div class="card-body text-center">
+                    <img src="@Model.LogoPath" alt="Logo de @Model.Name" class="img-fluid" style="max-height: 160px;" />
+                </div>
+            </div>
+        }
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Informações</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-5">CNPJ</dt>
+                    <dd class="col-7">@Model.Document</dd>
+                    <dt class="col-5">Telefone</dt>
+                    <dd class="col-7">@Model.PhoneNumber</dd>
+                    <dt class="col-5">E-mail</dt>
+                    <dd class="col-7">@Model.ResponsibleEmail</dd>
+                    <dt class="col-5">Responsável</dt>
+                    <dd class="col-7">@Model.ResponsibleName</dd>
+                    <dt class="col-5">E-mail do responsável</dt>
+                    <dd class="col-7">@Model.ResponsibleEmail</dd>
+                    <dt class="col-5">Endereço</dt>
+                    <dd class="col-7">
+                        @Model.Address<br />
+                        @if (!string.IsNullOrWhiteSpace(Model.AddressComplement))
+                        {
+                            @Model.AddressComplement<br />
+                        }
+                        @Model.City - @Model.State<br />
+                        CEP: @Model.PostalCode<br />
+                        @Model.Country
+                    </dd>
+                    <dt class="col-5">Limite colaboradores</dt>
+                    <dd class="col-7">@Model.EmployeeLimit</dd>
+                    <dt class="col-5">Colaboradores ativos</dt>
+                    <dd class="col-7">@Model.ActiveEmployees</dd>
+                    <dt class="col-5">Entregas</dt>
+                    <dd class="col-7">@Model.TotalDeliveries</dd>
+                    <dt class="col-5">Tipos de EPI</dt>
+                    <dd class="col-7">@Model.TotalEpiTypes</dd>
+                    <dt class="col-5">Status</dt>
+                    <dd class="col-7">
+                        @if (!Model.IsActive)
+                        {
+                            <span class="badge bg-danger">Bloqueada</span>
+                        }
+                        else if (Model.IsSuspended)
+                        {
+                            <span class="badge bg-warning text-dark">Suspensa</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Ativa</span>
+                        }
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mt-3">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Administrador</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.Administrator is not null)
+                {
+                    <p class="mb-1 fw-semibold">@Model.Administrator.FullName</p>
+                    <p class="mb-0">@Model.Administrator.Email</p>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">Nenhum usuário administrador cadastrado.</p>
+                }
+            </div>
+        </div>
+
+        <div class="card shadow-sm mt-3">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Registrar pagamento</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="RegisterPayment" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="TenantId" value="@paymentModel.TenantId" />
+                    <div class="mb-3">
+                        <label for="Amount" class="form-label">Valor</label>
+                        <input id="Amount" name="Amount" value="@paymentModel.Amount" class="form-control" type="number" step="0.01" min="0" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="PaymentDate" class="form-label">Data</label>
+                        <input id="PaymentDate" name="PaymentDate" value="@paymentModel.PaymentDate.ToString("yyyy-MM-dd")" class="form-control" type="date" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Reference" class="form-label">Referência</label>
+                        <input id="Reference" name="Reference" value="@paymentModel.Reference" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Notes" class="form-label">Observações</label>
+                        <textarea id="Notes" name="Notes" class="form-control" rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-receipt me-1"></i> Registrar pagamento
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-xl-8">
+        <div class="card shadow-sm h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Pagamentos</h5>
+            </div>
+            <div class="card-body p-0">
+                @if (Model.Payments.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Valor</th>
+                                    <th>Referência</th>
+                                    <th>Observações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var payment in Model.Payments)
+                                {
+                                    <tr>
+                                        <td>@payment.PaymentDateUtc.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                        <td>@payment.Amount.ToString("C")</td>
+                                        <td>@payment.Reference</td>
+                                        <td>@payment.Notes</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="p-4 text-center text-muted">Nenhum pagamento registrado.</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

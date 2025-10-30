@@ -1,0 +1,78 @@
+@model DeliveryReturnViewModel
+@{
+    ViewData["Title"] = "Registrar devolução";
+}
+
+<div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+            <h5 class="mb-0">Devolução de EPIs</h5>
+            <small class="text-muted">@Model.EmployeeName</small>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-arrow-left me-1"></i> Voltar
+        </a>
+    </div>
+    <div class="card-body">
+        <form asp-action="Return" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="DeliveryId" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>EPI</th>
+                            <th class="text-center">Entregue</th>
+                            <th class="text-center">Devolvido</th>
+                            <th class="text-center">Data</th>
+                            <th class="text-center">Devolver agora</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < Model.Items.Count; i++)
+                        {
+                            var item = Model.Items[i];
+                            var remaining = item.QuantityDelivered - (item.ReturnedQuantity ?? 0);
+                            <tr class="@(remaining == 0 ? "table-success" : string.Empty)">
+                                <td>
+                                    <input type="hidden" asp-for="Items[i].DeliveryItemId" />
+                                    <div class="fw-semibold">@item.EpiDescription</div>
+                                </td>
+                                <td class="text-center">@item.QuantityDelivered</td>
+                                <td class="text-center">@(item.ReturnedQuantity ?? 0)</td>
+                                <td class="text-center">@(item.ReturnedAtUtc?.ToLocalTime().ToString("dd/MM/yyyy HH:mm") ?? "-")</td>
+                                <td class="text-center" style="width: 180px;">
+                                    @if (remaining == 0)
+                                    {
+                                        <span class="badge bg-success">Concluído</span>
+                                    }
+                                    else
+                                    {
+                                        <div class="input-group input-group-sm">
+                                            <input asp-for="Items[i].QuantityToReturn" class="form-control text-center" min="0" max="@remaining" value="@remaining" />
+                                            <span class="input-group-text">un</span>
+                                        </div>
+                                        <span asp-validation-for="Items[i].QuantityToReturn" class="text-danger"></span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 d-flex justify-content-end gap-2">
+                <a asp-action="Index" class="btn btn-light">Cancelar</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Registrar devolução
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
