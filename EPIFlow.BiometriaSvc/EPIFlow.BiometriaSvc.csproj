@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+	<PlatformTarget>x86</PlatformTarget>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-EPIFlow.BiometriaSvc-d804d49a-f153-4323-b3e4-a0da7f998fa4</UserSecretsId>
+	<UseWindowsService>true</UseWindowsService>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	<FrameworkReference Include="Microsoft.WindowsDesktop.App.WindowsForms" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DPFPDevNET">
+      <HintPath>Libs\DPFPDevNET.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DPFPEngNET">
+      <HintPath>Libs\DPFPEngNET.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DPFPShrNET">
+      <HintPath>Libs\DPFPShrNET.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DPFPVerNET">
+      <HintPath>Libs\DPFPVerNET.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+</Project>

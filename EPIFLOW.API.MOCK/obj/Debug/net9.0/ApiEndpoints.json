@@ -1,0 +1,18 @@
+[
+  {
+    "ContainingType": "EPIFLOW.API.MOCK.Controllers.BiometriaController",
+    "Method": "ReceberBiometria",
+    "RelativePath": "receber",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "EPIFLOW.API.MOCK.Controllers.BiometriaRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

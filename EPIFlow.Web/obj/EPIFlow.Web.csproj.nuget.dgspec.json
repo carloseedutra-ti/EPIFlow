@@ -1,34 +1,40 @@
 {
   "format": 1,
   "restore": {
-    "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/EPIFlow.Web.csproj": {}
+    "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Web\\EPIFlow.Web.csproj": {}
   },
   "projects": {
-    "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Application/EPIFlow.Application.csproj": {
+    "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Application\\EPIFlow.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Application/EPIFlow.Application.csproj",
+        "projectUniqueName": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Application\\EPIFlow.Application.csproj",
         "projectName": "EPIFlow.Application",
-        "projectPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Application/EPIFlow.Application.csproj",
-        "packagesPath": "/Users/carloseduardopereiradutra/.nuget/packages/",
-        "outputPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Application/obj/",
+        "projectPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Application\\EPIFlow.Application.csproj",
+        "packagesPath": "C:\\Users\\CarlosEduardoPereira\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Application\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/carloseduardopereiradutra/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\CarlosEduardoPereira\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/EPIFlow.Domain.csproj": {
-                "projectPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/EPIFlow.Domain.csproj"
+              "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Domain\\EPIFlow.Domain.csproj": {
+                "projectPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Domain\\EPIFlow.Domain.csproj"
               }
             }
           }
@@ -43,7 +49,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0": {
@@ -74,27 +80,33 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/EPIFlow.Domain.csproj": {
+    "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Domain\\EPIFlow.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/EPIFlow.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Domain\\EPIFlow.Domain.csproj",
         "projectName": "EPIFlow.Domain",
-        "projectPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/EPIFlow.Domain.csproj",
-        "packagesPath": "/Users/carloseduardopereiradutra/.nuget/packages/",
-        "outputPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/obj/",
+        "projectPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Domain\\EPIFlow.Domain.csproj",
+        "packagesPath": "C:\\Users\\CarlosEduardoPereira\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/carloseduardopereiradutra/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\CarlosEduardoPereira\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -113,7 +125,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0": {
@@ -134,38 +146,44 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Infrastructure/EPIFlow.Infrastructure.csproj": {
+    "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Infrastructure\\EPIFlow.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Infrastructure/EPIFlow.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Infrastructure\\EPIFlow.Infrastructure.csproj",
         "projectName": "EPIFlow.Infrastructure",
-        "projectPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Infrastructure/EPIFlow.Infrastructure.csproj",
-        "packagesPath": "/Users/carloseduardopereiradutra/.nuget/packages/",
-        "outputPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Infrastructure/obj/",
+        "projectPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Infrastructure\\EPIFlow.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\CarlosEduardoPereira\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/carloseduardopereiradutra/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\CarlosEduardoPereira\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Application/EPIFlow.Application.csproj": {
-                "projectPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Application/EPIFlow.Application.csproj"
+              "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Application\\EPIFlow.Application.csproj": {
+                "projectPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Application\\EPIFlow.Application.csproj"
               },
-              "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/EPIFlow.Domain.csproj": {
-                "projectPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/EPIFlow.Domain.csproj"
+              "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Domain\\EPIFlow.Domain.csproj": {
+                "projectPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Domain\\EPIFlow.Domain.csproj"
               }
             }
           }
@@ -180,7 +198,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0": {
@@ -228,38 +246,44 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/EPIFlow.Web.csproj": {
+    "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Web\\EPIFlow.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/EPIFlow.Web.csproj",
+        "projectUniqueName": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Web\\EPIFlow.Web.csproj",
         "projectName": "EPIFlow.Web",
-        "projectPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/EPIFlow.Web.csproj",
-        "packagesPath": "/Users/carloseduardopereiradutra/.nuget/packages/",
-        "outputPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Web/obj/",
+        "projectPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Web\\EPIFlow.Web.csproj",
+        "packagesPath": "C:\\Users\\CarlosEduardoPereira\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Web\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/carloseduardopereiradutra/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\CarlosEduardoPereira\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Application/EPIFlow.Application.csproj": {
-                "projectPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Application/EPIFlow.Application.csproj"
+              "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Application\\EPIFlow.Application.csproj": {
+                "projectPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Application\\EPIFlow.Application.csproj"
               },
-              "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Infrastructure/EPIFlow.Infrastructure.csproj": {
-                "projectPath": "/Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Infrastructure/EPIFlow.Infrastructure.csproj"
+              "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Infrastructure\\EPIFlow.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\Área de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Infrastructure\\EPIFlow.Infrastructure.csproj"
               }
             }
           }
@@ -274,7 +298,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0": {
@@ -314,7 +338,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

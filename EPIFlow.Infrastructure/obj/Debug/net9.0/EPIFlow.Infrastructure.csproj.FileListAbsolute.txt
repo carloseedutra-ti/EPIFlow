@@ -17,3 +17,23 @@
 /Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Infrastructure/obj/Debug/net9.0/EPIFlow.Infrastructure.pdb
 /Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Infrastructure/obj/Debug/net9.0/EPIFlow.Infrastructure.genruntimeconfig.cache
 /Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Infrastructure/obj/Debug/net9.0/ref/EPIFlow.Infrastructure.dll
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\bin\Debug\net9.0\EPIFlow.Infrastructure.deps.json
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\bin\Debug\net9.0\EPIFlow.Infrastructure.runtimeconfig.json
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\bin\Debug\net9.0\EPIFlow.Infrastructure.dll
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\bin\Debug\net9.0\EPIFlow.Infrastructure.pdb
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\bin\Debug\net9.0\EPIFlow.Application.dll
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\bin\Debug\net9.0\EPIFlow.Domain.dll
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\bin\Debug\net9.0\EPIFlow.Domain.pdb
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\bin\Debug\net9.0\EPIFlow.Application.pdb
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\obj\Debug\net9.0\EPIFlow.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\obj\Debug\net9.0\EPIFlow.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\obj\Debug\net9.0\EPIFlow.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\obj\Debug\net9.0\EPIFlow.Infrastructure.AssemblyInfo.cs
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\obj\Debug\net9.0\EPIFlow.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\obj\Debug\net9.0\EPIFlow.Infrastructure.sourcelink.json
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\obj\Debug\net9.0\EPIFlow..60409AF0.Up2Date
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\obj\Debug\net9.0\EPIFlow.Infrastructure.dll
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\obj\Debug\net9.0\refint\EPIFlow.Infrastructure.dll
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\obj\Debug\net9.0\EPIFlow.Infrastructure.pdb
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\obj\Debug\net9.0\EPIFlow.Infrastructure.genruntimeconfig.cache
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Infrastructure\obj\Debug\net9.0\ref\EPIFlow.Infrastructure.dll

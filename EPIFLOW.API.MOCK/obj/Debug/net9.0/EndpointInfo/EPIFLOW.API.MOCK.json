@@ -1,0 +1,58 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "EPIFLOW.API.MOCK",
+    "version": "1.0"
+  },
+  "paths": {
+    "/receber": {
+      "post": {
+        "tags": [
+          "Biometria"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BiometriaRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BiometriaRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BiometriaRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BiometriaRequest": {
+        "type": "object",
+        "properties": {
+          "colaboradorId": {
+            "type": "string",
+            "nullable": true
+          },
+          "templateBase64": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

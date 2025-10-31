@@ -9,3 +9,15 @@
 /Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/obj/Debug/net9.0/refint/EPIFlow.Domain.dll
 /Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/obj/Debug/net9.0/EPIFlow.Domain.pdb
 /Users/carloseduardopereiradutra/Desktop/EPIFlow/EPIFlow.Domain/obj/Debug/net9.0/ref/EPIFlow.Domain.dll
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Domain\bin\Debug\net9.0\EPIFlow.Domain.deps.json
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Domain\bin\Debug\net9.0\EPIFlow.Domain.dll
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Domain\bin\Debug\net9.0\EPIFlow.Domain.pdb
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Domain\obj\Debug\net9.0\EPIFlow.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Domain\obj\Debug\net9.0\EPIFlow.Domain.AssemblyInfoInputs.cache
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Domain\obj\Debug\net9.0\EPIFlow.Domain.AssemblyInfo.cs
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Domain\obj\Debug\net9.0\EPIFlow.Domain.csproj.CoreCompileInputs.cache
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Domain\obj\Debug\net9.0\EPIFlow.Domain.sourcelink.json
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Domain\obj\Debug\net9.0\EPIFlow.Domain.dll
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Domain\obj\Debug\net9.0\refint\EPIFlow.Domain.dll
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Domain\obj\Debug\net9.0\EPIFlow.Domain.pdb
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFlow.Domain\obj\Debug\net9.0\ref\EPIFlow.Domain.dll
