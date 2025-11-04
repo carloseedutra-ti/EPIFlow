@@ -63,7 +63,7 @@ namespace EPIFlow.Biometria.Agent
             // --- GET /api/biometria/iniciar
             if (path == "/api/biometria/iniciar")
             {
-                _form.BeginInvoke(new Action(() => _form.StartCapture()));
+                _form.BeginInvoke(new Action(() => _form.StartCapture(true)));
                 TryWrite(ctx, 200, "{\"status\":\"ok\",\"mensagem\":\"Leitura iniciada, posicione o dedo.\"}");
                 return;
             }

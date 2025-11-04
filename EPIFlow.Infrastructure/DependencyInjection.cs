@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using EPIFlow.Application.Common.Interfaces;
 using EPIFlow.Infrastructure.Identity;
 using EPIFlow.Infrastructure.Persistence;
@@ -56,6 +56,7 @@ public static class DependencyInjection
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IUserLookupService, UserLookupService>();
         services.AddScoped<IPlatformUserService, PlatformUserService>();
+        services.AddScoped<IUserManagementService, UserManagementService>();
 
         return services;
     }

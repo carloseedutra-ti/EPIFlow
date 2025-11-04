@@ -35,6 +35,21 @@ public class ApplicationUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<
             identity.AddClaim(new Claim("name", user.FullName));
         }
 
+        if (!string.IsNullOrWhiteSpace(user.Department))
+        {
+            identity.AddClaim(new Claim("department", user.Department));
+        }
+
+        if (!string.IsNullOrWhiteSpace(user.JobTitle))
+        {
+            identity.AddClaim(new Claim("job_title", user.JobTitle));
+        }
+
+        if (user.DefaultBiometricAgentId.HasValue)
+        {
+            identity.AddClaim(new Claim("default_agent_id", user.DefaultBiometricAgentId.Value.ToString()));
+        }
+
         return identity;
     }
 }

@@ -31,4 +31,6 @@ public class Employee : AuditableEntity
     public EmployeeStatus Status { get; set; } = EmployeeStatus.Active;
 
     public ICollection<EpiDelivery> Deliveries { get; set; } = new List<EpiDelivery>();
+
+    public ICollection<BiometricTask> BiometricTasks { get; set; } = new List<BiometricTask>();
 }

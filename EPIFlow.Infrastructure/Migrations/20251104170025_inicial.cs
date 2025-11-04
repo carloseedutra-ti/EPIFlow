@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EPIFlow.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InicialCreate : Migration
+    public partial class inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,10 +35,23 @@ namespace EPIFlow.Infrastructure.Migrations
                     Document = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResponsibleName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    ResponsibleEmail = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    AddressComplement = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    City = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: true),
+                    State = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
                     Subdomain = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     ActiveSinceUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsSuspended = table.Column<bool>(type: "bit", nullable: false),
+                    SuspendedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EmployeeLimit = table.Column<int>(type: "int", nullable: false, defaultValue: 10),
+                    SubscriptionExpiresOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Notes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    LogoPath = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
                     TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -57,7 +70,10 @@ namespace EPIFlow.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FullName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Department = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    JobTitle = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    DefaultBiometricAgentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -97,6 +113,36 @@ namespace EPIFlow.Infrastructure.Migrations
                         name: "FK_RoleClaims_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BiometricAgents",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    MachineName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    ApiKey = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    LastSeenAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PollingIntervalSeconds = table.Column<int>(type: "int", nullable: false, defaultValue: 5),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BiometricAgents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BiometricAgents_Tenants_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -154,6 +200,33 @@ namespace EPIFlow.Infrastructure.Migrations
                     table.PrimaryKey("PK_EpiTypes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_EpiTypes_Tenants_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TenantPayments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    PaymentDateUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Reference = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Notes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TenantPayments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TenantPayments_Tenants_TenantId",
                         column: x => x.TenantId,
                         principalTable: "Tenants",
                         principalColumn: "Id",
@@ -243,6 +316,51 @@ namespace EPIFlow.Infrastructure.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BiometricTasks",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BiometricAgentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Finger = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    EmployeeName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    EmployeeRegistrationNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    RequestedByUserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    RequestedByUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    AssignedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    StartedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CompletedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CompletedByUserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CompletedByUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    PayloadJson = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResultJson = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FailureReason = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BiometricTasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BiometricTasks_BiometricAgents_BiometricAgentId",
+                        column: x => x.BiometricAgentId,
+                        principalTable: "BiometricAgents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BiometricTasks_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -378,6 +496,33 @@ namespace EPIFlow.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_BiometricAgents_ApiKey",
+                table: "BiometricAgents",
+                column: "ApiKey",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BiometricAgents_TenantId_Name",
+                table: "BiometricAgents",
+                columns: new[] { "TenantId", "Name" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BiometricTasks_BiometricAgentId_Status_CreatedAtUtc",
+                table: "BiometricTasks",
+                columns: new[] { "BiometricAgentId", "Status", "CreatedAtUtc" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BiometricTasks_EmployeeId",
+                table: "BiometricTasks",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BiometricTasks_TenantId_EmployeeId_Finger",
+                table: "BiometricTasks",
+                columns: new[] { "TenantId", "EmployeeId", "Finger" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DeliveryItems_EpiDeliveryId",
                 table: "DeliveryItems",
                 column: "EpiDeliveryId");
@@ -444,6 +589,11 @@ namespace EPIFlow.Infrastructure.Migrations
                 column: "InventoryItemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TenantPayments_TenantId",
+                table: "TenantPayments",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tenants_Subdomain",
                 table: "Tenants",
                 column: "Subdomain",
@@ -482,6 +632,9 @@ namespace EPIFlow.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "BiometricTasks");
+
+            migrationBuilder.DropTable(
                 name: "DeliveryItems");
 
             migrationBuilder.DropTable(
@@ -489,6 +642,9 @@ namespace EPIFlow.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "StockMovements");
+
+            migrationBuilder.DropTable(
+                name: "TenantPayments");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");
@@ -501,6 +657,9 @@ namespace EPIFlow.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserTokens");
+
+            migrationBuilder.DropTable(
+                name: "BiometricAgents");
 
             migrationBuilder.DropTable(
                 name: "EpiDeliveries");

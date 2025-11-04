@@ -1,51 +1,77 @@
-Ôªøusing System;
-using System.Collections.Generic;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EPIFlow.Biometria.Agent
 {
     public class AgentContext : ApplicationContext
     {
-        private readonly HiddenCaptureForm _form;
-        private readonly HttpAgent _http;
-        private readonly NotifyIcon _trayIcon;
-        private readonly ContextMenuStrip _menu;
+        private HiddenCaptureForm _form;
+        private NotifyIcon _trayIcon;
+        private ContextMenuStrip _menu;
 
         public AgentContext()
         {
-            // Cria o formul√°rio invis√≠vel respons√°vel pela captura
-            _form = new HiddenCaptureForm();
-            _http = new HttpAgent(_form);
-            _http.Start("http://localhost:5051/");
+            if (!EnsureConfiguration())
+            {
+                ExitThread();
+                return;
+            }
 
-            // Cria o menu da bandeja
+            InitializeComponents();
+        }
+
+        private void InitializeComponents()
+        {
+            _form = new HiddenCaptureForm();
+
             _menu = new ContextMenuStrip();
+            _menu.Items.Add("ConfiguraÁıes", null, Configuracoes_Click);
             _menu.Items.Add("Mostrar janela", null, MostrarJanela_Click);
             _menu.Items.Add(new ToolStripSeparator());
             _menu.Items.Add("Sair", null, Sair_Click);
 
-            // Cria o √≠cone da bandeja
             _trayIcon = new NotifyIcon
             {
-                Icon = SystemIcons.Application, // voc√™ pode trocar por um √≠cone do EPIFlow
+                Icon = SystemIcons.Application,
                 ContextMenuStrip = _menu,
                 Text = "EPIFlow Biometria Agent",
                 Visible = true
             };
 
             _trayIcon.DoubleClick += MostrarJanela_Click;
+            _trayIcon.ShowBalloonTip(3000, "EPIFlow Biometria Agent", "Agente biomÈtrico em execuÁ„o.", ToolTipIcon.Info);
+        }
 
-            // Mostra dica inicial
-            _trayIcon.ShowBalloonTip(
-                3000,
-                "EPIFlow Biometria Agent",
-                "Agente biom√©trico iniciado e escutando em http://localhost:5051",
-                ToolTipIcon.Info
-            );
+        private bool EnsureConfiguration()
+        {
+            while (!AgentSettings.IsConfigured)
+            {
+                using (var dialog = new ConfigurationForm())
+                {
+                    var result = dialog.ShowDialog();
+                    if (result != DialogResult.OK)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private void Configuracoes_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new ConfigurationForm())
+            {
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (_form != null && !_form.IsDisposed)
+                    {
+                        _form.ApplyConfigurationChange();
+                    }
+                }
+            }
         }
 
         private void MostrarJanela_Click(object sender, EventArgs e)
@@ -54,13 +80,13 @@ namespace EPIFlow.Biometria.Agent
             {
                 if (_form == null || _form.IsDisposed)
                 {
-                    MessageBox.Show("A janela de captura n√£o est√° dispon√≠vel.", "EPIFlow Agent");
+                    MessageBox.Show("A janela de captura n„o est· disponÌvel.", "EPIFlow Agent");
                     return;
                 }
 
                 _form.Show();
                 _form.WindowState = FormWindowState.Normal;
-                _form.Opacity = 1; // deixa vis√≠vel para debug
+                _form.Opacity = 1;
                 _form.TopMost = true;
                 _form.BringToFront();
                 _form.Activate();
@@ -73,10 +99,7 @@ namespace EPIFlow.Biometria.Agent
 
         private void Sair_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Deseja realmente encerrar o agente biom√©trico?",
-                                "EPIFlow Agent",
-                                MessageBoxButtons.YesNo,
-                                MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Deseja realmente encerrar o agente biomÈtrico?", "EPIFlow Agent", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 ExitThread();
             }
@@ -84,9 +107,8 @@ namespace EPIFlow.Biometria.Agent
 
         protected override void ExitThreadCore()
         {
-            try { _trayIcon.Visible = false; } catch { }
-            try { _http?.Stop(); } catch { }
-            try { _form?.Dispose(); } catch { }
+            try { if (_trayIcon != null) _trayIcon.Visible = false; } catch { }
+            try { if (_form != null && !_form.IsDisposed) _form.Dispose(); } catch { }
             base.ExitThreadCore();
         }
     }

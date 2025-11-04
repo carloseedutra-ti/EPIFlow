@@ -1,3 +1,4 @@
+using EPIFlow.Application.Biometrics.Services;
 using EPIFlow.Application.Deliveries.Services;
 using EPIFlow.Application.Dashboard.Services;
 using EPIFlow.Application.EpiTypes.Services;
@@ -23,6 +24,7 @@ public static class DependencyInjection
         services.AddScoped<IReportService, ReportService>();
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<ITenantManagementService, TenantManagementService>();
+        services.AddScoped<IBiometricEnrollmentService, BiometricEnrollmentService>();
 
         return services;
     }

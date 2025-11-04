@@ -13,7 +13,7 @@ namespace EPIFlow.Biometria.Agent.Properties
 
 
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.0.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
     {
 
@@ -24,6 +24,36 @@ namespace EPIFlow.Biometria.Agent.Properties
             get
             {
                 return defaultInstance;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://localhost:5001/")]
+        public string AgentBaseUrl
+        {
+            get
+            {
+                return ((string)(this["AgentBaseUrl"]));
+            }
+            set
+            {
+                this["AgentBaseUrl"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AgentApiKey
+        {
+            get
+            {
+                return ((string)(this["AgentApiKey"]));
+            }
+            set
+            {
+                this["AgentApiKey"] = value;
             }
         }
     }

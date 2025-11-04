@@ -37,6 +37,8 @@ public class EPIFlowDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
     public DbSet<EpiDelivery> EpiDeliveries => Set<EpiDelivery>();
     public DbSet<DeliveryItem> DeliveryItems => Set<DeliveryItem>();
     public DbSet<TenantPayment> TenantPayments => Set<TenantPayment>();
+    public DbSet<BiometricAgent> BiometricAgents => Set<BiometricAgent>();
+    public DbSet<BiometricTask> BiometricTasks => Set<BiometricTask>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

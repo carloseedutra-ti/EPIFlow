@@ -160,17 +160,22 @@ public class DeliveryService : IDeliveryService
             throw new ValidationException("Usuário responsável não identificado.", new Dictionary<string, string[]> { { "User", new[] { "Usuário não autenticado." } } });
         }
 
+        var tenantId = employee.TenantId;
+
         var delivery = new EpiDelivery
         {
             EmployeeId = dto.EmployeeId,
             DeliveryDate = dto.DeliveryDate,
             ResponsibleUserId = responsibleUserId.Value,
             DeliveryNumber = dto.DeliveryNumber,
-            Notes = dto.Notes
+            Notes = dto.Notes,
+            TenantId = tenantId
         };
 
         foreach (var itemDto in dto.Items)
         {
+            var movementTimestamp = _dateTimeProvider.UtcNow;
+
             var inventoryItem = await _inventoryRepository.AsQueryable()
                 .Include(item => item.EpiType)
                 .FirstOrDefaultAsync(item => item.EpiTypeId == itemDto.EpiTypeId, cancellationToken);
@@ -200,7 +205,8 @@ public class DeliveryService : IDeliveryService
             {
                 EpiTypeId = itemDto.EpiTypeId,
                 Quantity = itemDto.Quantity,
-                ValidUntil = itemDto.ValidUntil
+                ValidUntil = itemDto.ValidUntil,
+                TenantId = tenantId
             };
 
             delivery.Items.Add(deliveryItem);
@@ -210,9 +216,10 @@ public class DeliveryService : IDeliveryService
                 InventoryItemId = inventoryItem.Id,
                 MovementType = StockMovementType.Exit,
                 Quantity = itemDto.Quantity,
-                MovementDate = dto.DeliveryDate,
+                MovementDate = movementTimestamp,
                 Reference = delivery.DeliveryNumber,
-                Notes = $"Entrega para colaborador {employee.Name}"
+                Notes = $"Entrega para colaborador {employee.Name}",
+                TenantId = tenantId
             };
 
             await _inventoryRepository.UpdateAsync(inventoryItem, cancellationToken);
@@ -249,6 +256,10 @@ public class DeliveryService : IDeliveryService
                 throw new NotFoundException("Item de entrega não encontrado.");
             }
 
+            var tenantId = deliveryItem.TenantId != Guid.Empty
+                ? deliveryItem.TenantId
+                : deliveryItem.Delivery?.TenantId ?? Guid.Empty;
+
             if (deliveryItem.ReturnedQuantity.HasValue)
             {
                 throw new ValidationException(
@@ -277,7 +288,8 @@ public class DeliveryService : IDeliveryService
                 {
                     EpiTypeId = deliveryItem.EpiTypeId,
                     QuantityAvailable = 0,
-                    MinimumQuantity = 0
+                    MinimumQuantity = 0,
+                    TenantId = tenantId
                 };
 
                 await _inventoryRepository.AddAsync(inventoryItem, cancellationToken);
@@ -293,7 +305,8 @@ public class DeliveryService : IDeliveryService
                 Quantity = returnDto.ReturnedQuantity,
                 MovementDate = returnDto.ReturnedAtUtc,
                 Reference = deliveryItem.Delivery?.DeliveryNumber,
-                Notes = "Devolução de EPI"
+                Notes = "Devolução de EPI",
+                TenantId = tenantId
             };
 
             if (!isNewInventoryItem)

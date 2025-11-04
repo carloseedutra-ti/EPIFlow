@@ -34,3 +34,4 @@ C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Á
 C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFLOW.API.MOCK\obj\Debug\net9.0\EPIFLOW.API.MOCK.pdb
 C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFLOW.API.MOCK\obj\Debug\net9.0\EPIFLOW.API.MOCK.genruntimeconfig.cache
 C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFLOW.API.MOCK\obj\Debug\net9.0\ref\EPIFLOW.API.MOCK.dll
+C:\Users\CarlosEduardoPereira\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\Área de Trabalho\Trabalho2025-2\PIE-IV\EPIFlow\EPIFLOW.API.MOCK\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

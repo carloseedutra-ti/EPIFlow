@@ -1,20 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\\u00C1rea de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{714C0A75-CCE6-4F6C-A961-5FF38697A4F9}|EPIFlow.Biometria.Agent\\EPIFlow.Biometria.Agent.csproj|c:\\users\\carloseduardopereira\\onedrive - carboox resende industria e comercio\\\u00E1rea de trabalho\\trabalho2025-2\\pie-iv\\epiflow\\epiflow.biometria.agent\\hiddencaptureform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{714C0A75-CCE6-4F6C-A961-5FF38697A4F9}|EPIFlow.Biometria.Agent\\EPIFlow.Biometria.Agent.csproj|solutionrelative:epiflow.biometria.agent\\hiddencaptureform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{714C0A75-CCE6-4F6C-A961-5FF38697A4F9}|EPIFlow.Biometria.Agent\\EPIFlow.Biometria.Agent.csproj|c:\\users\\carloseduardopereira\\onedrive - carboox resende industria e comercio\\\u00E1rea de trabalho\\trabalho2025-2\\pie-iv\\epiflow\\epiflow.biometria.agent\\trayiconmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{714C0A75-CCE6-4F6C-A961-5FF38697A4F9}|EPIFlow.Biometria.Agent\\EPIFlow.Biometria.Agent.csproj|solutionrelative:epiflow.biometria.agent\\trayiconmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{714C0A75-CCE6-4F6C-A961-5FF38697A4F9}|EPIFlow.Biometria.Agent\\EPIFlow.Biometria.Agent.csproj|C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\\u00C1rea de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\epiflow.biometria.agent\\httpagent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{714C0A75-CCE6-4F6C-A961-5FF38697A4F9}|EPIFlow.Biometria.Agent\\EPIFlow.Biometria.Agent.csproj|solutionrelative:epiflow.biometria.agent\\httpagent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -22,7 +9,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -39,45 +26,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "TrayIconManager.cs",
-              "DocumentMoniker": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\\u00C1rea de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Biometria.Agent\\TrayIconManager.cs",
-              "RelativeDocumentMoniker": "EPIFlow.Biometria.Agent\\TrayIconManager.cs",
-              "ToolTip": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\\u00C1rea de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Biometria.Agent\\TrayIconManager.cs",
-              "RelativeToolTip": "EPIFlow.Biometria.Agent\\TrayIconManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-31T14:45:26.499Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "HiddenCaptureForm.cs",
-              "DocumentMoniker": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\\u00C1rea de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Biometria.Agent\\HiddenCaptureForm.cs",
-              "RelativeDocumentMoniker": "EPIFlow.Biometria.Agent\\HiddenCaptureForm.cs",
-              "ToolTip": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\\u00C1rea de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Biometria.Agent\\HiddenCaptureForm.cs",
-              "RelativeToolTip": "EPIFlow.Biometria.Agent\\HiddenCaptureForm.cs",
-              "ViewState": "AgIAAIAAAAAAAAAAAAAIwKsAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-31T12:51:09.271Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "HttpAgent.cs",
-              "DocumentMoniker": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\\u00C1rea de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Biometria.Agent\\HttpAgent.cs",
-              "RelativeDocumentMoniker": "EPIFlow.Biometria.Agent\\HttpAgent.cs",
-              "ToolTip": "C:\\Users\\CarlosEduardoPereira\\OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO\\\u00C1rea de Trabalho\\Trabalho2025-2\\PIE-IV\\EPIFlow\\EPIFlow.Biometria.Agent\\HttpAgent.cs",
-              "RelativeToolTip": "EPIFlow.Biometria.Agent\\HttpAgent.cs",
-              "ViewState": "AgIAAJkAAAAAAAAAAAAmwGsAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T15:58:00.617Z",
-              "EditorCaption": ""
             }
           ]
         }

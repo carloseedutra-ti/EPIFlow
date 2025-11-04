@@ -34,4 +34,5 @@ public class Tenant : AuditableEntity
     public ICollection<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
     public ICollection<EpiDelivery> Deliveries { get; set; } = new List<EpiDelivery>();
     public ICollection<TenantPayment> Payments { get; set; } = new List<TenantPayment>();
+    public ICollection<BiometricAgent> BiometricAgents { get; set; } = new List<BiometricAgent>();
 }
