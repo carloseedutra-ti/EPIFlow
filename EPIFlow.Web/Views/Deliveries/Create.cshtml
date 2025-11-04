@@ -1,3 +1,5 @@
+@using System
+@using EPIFlow.Web.Controllers
 @model DeliveryCreateViewModel
 @{
     ViewData["Title"] = "Registrar entrega";
@@ -11,9 +13,17 @@
         </a>
     </div>
     <div class="card-body">
-        <form asp-action="Create" method="post">
+        <form asp-action="Create"
+              method="post"
+              data-delivery-form
+              data-validation-request-url="@Url.Action(nameof(DeliveriesController.ValidateEmployeeBiometrics))"
+              data-validation-status-url="@Url.Action(nameof(DeliveriesController.GetBiometricValidationStatus))">
             @Html.AntiForgeryToken()
+
             <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <input type="hidden" asp-for="BiometricValidationTaskId" />
+            <input type="hidden" asp-for="IsBiometricValidated" />
 
             <div class="row g-3">
                 <div class="col-md-6">
@@ -33,8 +43,42 @@
                 </div>
                 <div class="col-12">
                     <label asp-for="Notes" class="form-label"></label>
-                    <textarea asp-for="Notes" rows="3" class="form-control"></textarea>
+                    <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
                     <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+
+                <div class="col-12">
+                    <div class="card border-secondary-subtle">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                                <h6 class="mb-0"><i class="fas fa-shield-check me-2"></i>Valida&ccedil;&atilde;o biom&eacute;trica do colaborador</h6>
+                                <span class="text-muted small">Obrigat&oacute;ria para liberar o salvamento da entrega.</span>
+                            </div>
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-4">
+                                    <label class="form-label">Agente biom&eacute;trico</label>
+                                    <select class="form-select" data-agent-select>
+                                        <option value="">Selecione o agente</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Digital cadastrada</label>
+                                    <select class="form-select" data-finger-select>
+                                        <option value="">Selecione o dedo</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 d-flex gap-2">
+                                    <button type="button" class="btn btn-outline-primary flex-grow-1" data-validate-biometric>
+                                        <i class="fas fa-fingerprint me-1"></i> Validar digital
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" data-refresh-biometric title="Atualizar lista de agentes">
+                                        <i class="fas fa-rotate"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-3" data-validation-feedback></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -66,7 +110,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label asp-for="Items[i].ValidUntil" class="form-label form-required">Validade</label>
-                                        <input asp-for="Items[i].ValidUntil" class="form-control" />
+                                        <input asp-for="Items[i].ValidUntil" class="form-control" type="date" />
                                         <span asp-validation-for="Items[i].ValidUntil" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -83,7 +127,7 @@
 
             <div class="mt-4 d-flex justify-content-end gap-2">
                 <a asp-action="Index" class="btn btn-light">Cancelar</a>
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" data-save-delivery @(Model.IsBiometricValidated ? string.Empty : "disabled")>
                     <i class="fas fa-save me-1"></i> Salvar entrega
                 </button>
             </div>
@@ -112,7 +156,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label form-required" for="Items___index__-ValidUntil">Validade</label>
-                        <input class="form-control" id="Items___index__-ValidUntil" name="Items[__index__].ValidUntil" type="date" value="@DateTime.Today.AddMonths(6).ToString("yyyy-MM-dd")" />
+                        <input class="form-control" id="Items___index__-ValidUntil" name="Items[__index__].ValidUntil" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
                     </div>
                 </div>
                 <div class="text-end mt-3">
@@ -127,4 +171,519 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        (() => {
+            const form = document.querySelector('[data-delivery-form]');
+            if (!form) {
+                return;
+            }
+
+            const defaultAgentId = '@(User.FindFirst("default_agent_id")?.Value ?? string.Empty)'.trim();
+
+            const employeeSelect = form.querySelector('#EmployeeId');
+            const agentSelect = form.querySelector('[data-agent-select]');
+            const fingerSelect = form.querySelector('[data-finger-select]');
+            const validateButton = form.querySelector('[data-validate-biometric]');
+            const refreshButton = form.querySelector('[data-refresh-biometric]');
+            const feedbackContainer = form.querySelector('[data-validation-feedback]');
+            const saveButton = form.querySelector('[data-save-delivery]');
+            const hiddenTaskId = form.querySelector('input[name="BiometricValidationTaskId"]');
+            const hiddenValidated = form.querySelector('input[name="IsBiometricValidated"]');
+            const tokenInput = form.querySelector('input[name="__RequestVerificationToken"]');
+            const requestUrl = form.dataset.validationRequestUrl;
+            const statusUrlBase = form.dataset.validationStatusUrl;
+            const maxAttempts = 40;
+            const pollIntervalMs = 3000;
+
+            const normalizeGuid = (value) => (typeof value === 'string' ? value.trim().toLowerCase() : '');
+            const guidEquals = (a, b) => normalizeGuid(a) === normalizeGuid(b);
+
+            let overviewCache = null;
+            let pollTimer = null;
+            let currentState = 'idle';
+            let currentTaskId = hiddenTaskId?.value || null;
+
+            const toBool = (value) => (typeof value === 'string' ? value.toLowerCase() === 'true' : Boolean(value));
+
+            const setFeedback = (type, message) => {
+                if (!feedbackContainer) {
+                    return;
+                }
+
+                if (!message) {
+                    feedbackContainer.innerHTML = '';
+                    return;
+                }
+
+                const alertClass = type === 'success'
+                    ? 'alert-success'
+                    : type === 'error'
+                        ? 'alert-danger'
+                        : type === 'warning'
+                            ? 'alert-warning'
+                            : 'alert-info';
+
+                feedbackContainer.innerHTML = `<div class="alert ${alertClass} mb-0">${message}</div>`;
+            };
+
+            const fetchJson = async (url, options = {}) => {
+                const response = await fetch(url, {
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        ...(options.headers ?? {})
+                    },
+                    ...options
+                });
+
+                return response;
+            };
+
+            const canValidate = () => Boolean(employeeSelect?.value && agentSelect?.value && fingerSelect?.value);
+
+            const updateValidateAvailability = () => {
+                if (!validateButton) {
+                    return;
+                }
+
+                if (!agentSelect?.value || !fingerSelect?.value || currentState === 'pending') {
+                    validateButton.disabled = true;
+                    return;
+                }
+
+                validateButton.disabled = !canValidate();
+            };
+
+            const clearPoll = () => {
+                if (pollTimer) {
+                    clearTimeout(pollTimer);
+                    pollTimer = null;
+                }
+            };
+
+            const setValidationState = (state, message) => {
+                currentState = state;
+
+                switch (state) {
+                    case 'pending':
+                        if (hiddenValidated) {
+                            hiddenValidated.value = 'false';
+                        }
+                        if (saveButton) {
+                            saveButton.disabled = true;
+                        }
+                        setFeedback('warning', message || 'Aguardando valida\u00E7\u00E3o do agente biom\u00E9trico...');
+                        if (validateButton) {
+                            validateButton.disabled = true;
+                        }
+                        if (refreshButton) {
+                            refreshButton.disabled = true;
+                        }
+                        break;
+                    case 'success':
+                        if (hiddenValidated) {
+                            hiddenValidated.value = 'true';
+                        }
+                        if (saveButton) {
+                            saveButton.disabled = false;
+                        }
+                        setFeedback('success', message || 'Impress\u00E3o digital validada com sucesso.');
+                        if (validateButton) {
+                            validateButton.disabled = false;
+                        }
+                        if (refreshButton) {
+                            refreshButton.disabled = false;
+                        }
+                        break;
+                    case 'error':
+                        if (hiddenValidated) {
+                            hiddenValidated.value = 'false';
+                        }
+                        if (saveButton) {
+                            saveButton.disabled = true;
+                        }
+                        setFeedback('error', message || 'Falha na valida\u00E7\u00E3o biom\u00E9trica. Tente novamente.');
+                        if (validateButton) {
+                            validateButton.disabled = !canValidate();
+                        }
+                        if (refreshButton) {
+                            refreshButton.disabled = false;
+                        }
+                        break;
+                    default:
+                        if (hiddenValidated) {
+                            hiddenValidated.value = 'false';
+                        }
+                        if (saveButton) {
+                            saveButton.disabled = true;
+                        }
+                        setFeedback('info', message || 'Realize a valida\u00E7\u00E3o biom\u00E9trica do colaborador antes de salvar a entrega.');
+                        if (validateButton) {
+                            validateButton.disabled = !canValidate();
+                        }
+                        if (refreshButton) {
+                            refreshButton.disabled = false;
+                        }
+                        break;
+                }
+            };
+
+            const resetValidation = (options = { keepTask: false }) => {
+                clearPoll();
+                if (!options.keepTask) {
+                    currentTaskId = null;
+                    if (hiddenTaskId) {
+                        hiddenTaskId.value = '';
+                    }
+                }
+                setValidationState('idle');
+            };
+
+            const resetSelectOptions = () => {
+                if (agentSelect) {
+                    agentSelect.innerHTML = '<option value="">Selecione o agente</option>';
+                    agentSelect.disabled = true;
+                }
+
+                if (fingerSelect) {
+                    fingerSelect.innerHTML = '<option value="">Selecione o dedo</option>';
+                    fingerSelect.disabled = true;
+                }
+            };
+
+            const populateAgentOptions = (agents) => {
+                if (!agentSelect) {
+                    return;
+                }
+
+                const previousValue = agentSelect.value;
+                agentSelect.innerHTML = '';
+                agentSelect.appendChild(new Option('Selecione o agente', '', true, false));
+
+                agents.forEach(agent => {
+                    const optionValue = agent.id?.toString() ?? '';
+                    const label = agent.isOnline ? `${agent.name} (online)` : `${agent.name} (offline)`;
+                    const option = new Option(label, optionValue, false, false);
+                    option.disabled = !agent.isOnline && !guidEquals(optionValue, defaultAgentId);
+                    agentSelect.appendChild(option);
+                });
+
+                agentSelect.disabled = agents.length === 0;
+
+                const hasPrevious = previousValue && Array.from(agentSelect.options).some(option => !option.disabled && guidEquals(option.value, previousValue));
+                if (hasPrevious) {
+                    agentSelect.value = previousValue;
+                    return;
+                }
+
+                const defaultOption = defaultAgentId && Array.from(agentSelect.options).find(option => guidEquals(option.value, defaultAgentId));
+                if (defaultOption) {
+                    agentSelect.value = defaultOption.value;
+                } else {
+                    agentSelect.value = '';
+                }
+            };
+
+            const populateFingerOptions = (fingers) => {
+                if (!fingerSelect) {
+                    return;
+                }
+
+                fingerSelect.innerHTML = '<option value="">Selecione o dedo</option>';
+                fingers.forEach(finger => {
+                    const value = finger.fingerKey ?? finger.fingerValue ?? '';
+                    const option = new Option(finger.displayName, value, false, false);
+                    option.disabled = finger.statusValue === 'Pending' || finger.statusValue === 'InProgress';
+                    fingerSelect.appendChild(option);
+                });
+
+                fingerSelect.disabled = fingers.length === 0;
+            };
+
+            const ensureOverview = async (forceReload = false) => {
+                const employeeId = employeeSelect?.value;
+                if (!employeeId) {
+                    setFeedback('warning', 'Selecione o colaborador para carregar os dados biom\u00E9tricos.');
+                    return null;
+                }
+
+                if (!forceReload && overviewCache && overviewCache.employeeId === employeeId) {
+                    return overviewCache;
+                }
+
+                setFeedback('info', 'Carregando informa\u00E7\u00F5es biom\u00E9tricas do colaborador...');
+
+                try {
+                    const response = await fetchJson(`/biometria/colaboradores/${employeeId}/overview`, { cache: 'no-store' });
+                    if (!response.ok) {
+                        const payload = await response.json().catch(() => null);
+                        throw new Error(payload?.error || 'Falha ao carregar informa\u00E7\u00F5es biom\u00E9tricas.');
+                    }
+
+                    const data = await response.json();
+                    overviewCache = data;
+                    return data;
+                } catch (error) {
+                    setValidationState('error', 'Falha ao carregar informa\u00E7\u00F5es biom\u00E9tricas.');
+                    return null;
+                }
+            };
+
+            const applyOverview = (overview) => {
+                populateAgentOptions(Array.isArray(overview.agents) ? overview.agents : []);
+
+                const testableFingers = Array.isArray(overview.fingers)
+                    ? overview.fingers.filter(finger => Boolean(finger.canTest))
+                    : [];
+
+                populateFingerOptions(testableFingers);
+
+                if (overview.status === 'Pending') {
+                    setValidationState('pending', 'Aguardando valida\u00E7\u00E3o do agente biom\u00E9trico...');
+                } else if (overview.status === 'Success') {
+                    setValidationState('success', 'Impress\u00E3o digital validada com sucesso.');
+                } else if (overview.status === 'Failure') {
+                    setValidationState('error', overview.failureReason || 'O agente n\u00E3o reconheceu a digital informada.');
+                } else {
+                    setValidationState('idle');
+                }
+            };
+
+            const pollStatus = async (taskId, attempt = 0) => {
+                clearPoll();
+
+                if (!taskId) {
+                    return;
+                }
+
+                try {
+                    const response = await fetchJson(`${statusUrlBase}?taskId=${encodeURIComponent(taskId)}&attempt=${attempt}`);
+
+                    if (!response.ok) {
+                        const payload = await response.json().catch(() => null);
+                        throw new Error(payload?.error || 'Falha ao consultar o status da valida\u00E7\u00E3o.');
+                    }
+
+                    const data = await response.json();
+
+                    if (data.status === 'Completed') {
+                        setValidationState('success', data.message || 'Impress\u00E3o digital validada com sucesso.');
+                        clearPoll();
+                        return;
+                    }
+
+                    if (data.status === 'Failed' || data.status === 'Cancelled') {
+                        setValidationState('error', data.failureReason || 'O agente n\u00E3o reconheceu a digital informada.');
+                        clearPoll();
+                        return;
+                    }
+
+                    if (attempt >= maxAttempts) {
+                        setValidationState('error', data.failureReason || 'Tempo limite excedido ao aguardar a valida\u00E7\u00E3o do agente.');
+                        clearPoll();
+                        return;
+                    }
+
+                    pollTimer = setTimeout(() => pollStatus(taskId, attempt + 1), pollIntervalMs);
+                }
+                catch (error) {
+                    setValidationState('error', 'Falha ao consultar o status da valida\u00E7\u00E3o.');
+                }
+            };
+
+            const startPolling = (taskId) => {
+                currentTaskId = taskId;
+                if (hiddenTaskId) {
+                    hiddenTaskId.value = taskId;
+                }
+
+                clearPoll();
+                setValidationState('pending');
+                pollTimer = setTimeout(() => pollStatus(taskId, 0), pollIntervalMs);
+            };
+
+            if (employeeSelect) {
+                employeeSelect.addEventListener('change', async () => {
+                    overviewCache = null;
+                    resetSelectOptions();
+                    resetValidation({ keepTask: false });
+                    const overview = await ensureOverview(true);
+                    if (overview) {
+                        applyOverview(overview);
+                    }
+                    updateValidateAvailability();
+                });
+            }
+
+            if (agentSelect) {
+                agentSelect.addEventListener('change', () => {
+                    if (currentState === 'success') {
+                        resetValidation({ keepTask: false });
+                    }
+                    updateValidateAvailability();
+                });
+            }
+
+            if (fingerSelect) {
+                fingerSelect.addEventListener('change', () => {
+                    if (currentState === 'success') {
+                        resetValidation({ keepTask: false });
+                    }
+                    updateValidateAvailability();
+                });
+            }
+
+            if (refreshButton) {
+                refreshButton.addEventListener('click', async () => {
+                    if (refreshButton.disabled) {
+                        return;
+                    }
+
+                    refreshButton.disabled = true;
+                    refreshButton.innerHTML = '<i class="fas fa-rotate fa-spin"></i>';
+
+                    try {
+                        overviewCache = await ensureOverview(true);
+                        if (overviewCache) {
+                            applyOverview(overviewCache);
+                        }
+                        setFeedback('success', 'Lista atualizada.');
+                    }
+                    catch (error) {
+                        setFeedback('error', error.message || 'Falha ao atualizar a lista de agentes.');
+                    }
+                    finally {
+                        refreshButton.disabled = false;
+                        refreshButton.innerHTML = '<i class="fas fa-rotate"></i>';
+                    }
+                });
+            }
+
+            if (validateButton) {
+                validateButton.addEventListener('click', async () => {
+                    if (validateButton.disabled || currentState === 'pending') {
+                        return;
+                    }
+
+                    const token = tokenInput?.value;
+                    if (!token) {
+                        setValidationState('error', 'Token de seguran\u00E7a n\u00E3o encontrado.');
+                        return;
+                    }
+
+                    const overview = await ensureOverview();
+                    if (!overview || !canValidate()) {
+                        updateValidateAvailability();
+                        setFeedback('warning', 'Selecione um agente online e uma digital cadastrada para validar.');
+                        return;
+                    }
+
+                    try {
+                        setValidationState('pending');
+
+                        const response = await fetch(requestUrl, {
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'RequestVerificationToken': token
+                            },
+                            body: JSON.stringify({
+                                employeeId: employeeSelect.value,
+                                agentId: agentSelect.value,
+                                finger: fingerSelect.value
+                            })
+                        });
+
+                        if (!response.ok) {
+                            const payload = await response.json().catch(() => null);
+                            throw new Error(payload?.error || 'Falha ao solicitar a valida\u00E7\u00E3o biom\u00E9trica.');
+                        }
+
+                        const data = await response.json();
+                        if (!data?.taskId) {
+                            throw new Error('Resposta inv\u00E1lida do servidor.');
+                        }
+
+                        startPolling(data.taskId);
+                    }
+                    catch (error) {
+                        console.error('Falha ao solicitar valida\u00E7\u00E3o biom\u00E9trica', error);
+                        resetValidation({ keepTask: false });
+                        setValidationState('error', error?.message || 'N\u00E3o foi poss\u00EDvel solicitar a valida\u00E7\u00E3o biom\u00E9trica.');
+                    }
+                });
+            }
+
+            const initialValidated = toBool(hiddenValidated?.value);
+            if (initialValidated && hiddenTaskId?.value) {
+                setValidationState('success', 'Impress\u00E3o digital validada.');
+                if (!currentTaskId) {
+                    currentTaskId = hiddenTaskId.value;
+                    pollStatus(currentTaskId, 0);
+                }
+            } else {
+                resetValidation({ keepTask: false });
+                resetSelectOptions();
+            }
+
+            updateValidateAvailability();
+
+            // Initial load
+            ensureOverview().then((overview) => {
+                if (overview) {
+                    applyOverview(overview);
+                }
+            });
+
+            // Delivery item handlers
+            const itemsContainer = form.querySelector('[data-delivery-items-container]');
+            const addItemButton = form.querySelector('[data-add-delivery-item]');
+            const itemTemplate = document.getElementById('delivery-item-template');
+
+            const refreshItemIndexes = () => {
+                if (!itemsContainer) {
+                    return;
+                }
+
+                const items = itemsContainer.querySelectorAll('[data-delivery-item]');
+                items.forEach((item, index) => {
+                    item.querySelectorAll('[id]').forEach(element => {
+                        const newId = element.id.replace('__index__', index.toString());
+                        element.id = newId;
+                    });
+
+                    item.querySelectorAll('[name]').forEach(element => {
+                        const newName = element.name.replace('__index__', index.toString());
+                        element.name = newName;
+                    });
+                });
+            };
+
+            const attachItemListeners = (root) => {
+                root.querySelectorAll('[data-remove-delivery-item]').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const item = button.closest('[data-delivery-item]');
+                        if (item) {
+                            item.remove();
+                            refreshItemIndexes();
+                        }
+                    });
+                });
+            };
+
+            if (itemsContainer) {
+                attachItemListeners(itemsContainer);
+            }
+
+            if (addItemButton && itemTemplate && itemsContainer) {
+                addItemButton.addEventListener('click', () => {
+                    const clone = itemTemplate.content.cloneNode(true);
+                    itemsContainer.appendChild(clone);
+                    refreshItemIndexes();
+                    attachItemListeners(itemsContainer);
+                });
+            }
+        })();
+    </script>
 }

@@ -56,6 +56,13 @@ public class InventoryController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RegisterMovement(StockMovementFormViewModel form)
     {
+        form.Reference = form.Reference?.Trim();
+
+        if (string.IsNullOrWhiteSpace(form.Reference))
+        {
+            ModelState.AddModelError(nameof(form.Reference), "Informe a referência da movimentação.");
+        }
+
         if (!ModelState.IsValid)
         {
             var viewModelInvalid = await LoadDetailsViewModel(form.InventoryItemId);

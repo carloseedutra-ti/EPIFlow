@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EPIFlow.Application.Biometrics.DTOs;
+using EPIFlow.Application.Biometrics.Services;
 using EPIFlow.Application.Common.Exceptions;
 using EPIFlow.Application.Deliveries.DTOs.Requests;
 using EPIFlow.Application.Deliveries.Services;
@@ -22,15 +24,18 @@ public class DeliveriesController : Controller
     private readonly IDeliveryService _deliveryService;
     private readonly IEmployeeService _employeeService;
     private readonly IEpiTypeService _epiTypeService;
+    private readonly IBiometricEnrollmentService _biometricEnrollmentService;
 
     public DeliveriesController(
         IDeliveryService deliveryService,
         IEmployeeService employeeService,
-        IEpiTypeService epiTypeService)
+        IEpiTypeService epiTypeService,
+        IBiometricEnrollmentService biometricEnrollmentService)
     {
         _deliveryService = deliveryService;
         _employeeService = employeeService;
         _epiTypeService = epiTypeService;
+        _biometricEnrollmentService = biometricEnrollmentService;
     }
 
     public async Task<IActionResult> Index(Guid? employeeId, Guid? epiTypeId)
@@ -95,6 +100,33 @@ public class DeliveriesController : Controller
         if (!viewModel.Items.Any())
         {
             ModelState.AddModelError(string.Empty, "Informe ao menos um EPI para entrega.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            await PopulateCreateViewModelAsync(viewModel);
+            return View(viewModel);
+        }
+
+        if (!viewModel.EmployeeId.HasValue)
+        {
+            ModelState.AddModelError(string.Empty, "Selecione o colaborador.");
+        }
+        else if (!viewModel.IsBiometricValidated || !viewModel.BiometricValidationTaskId.HasValue)
+        {
+            ModelState.AddModelError(string.Empty, "Valide a impress\u00E3o digital do colaborador antes de salvar.");
+        }
+        else
+        {
+            var status = await _biometricEnrollmentService.GetTaskStatusAsync(viewModel.BiometricValidationTaskId.Value, HttpContext.RequestAborted);
+            if (status is null ||
+                status.EmployeeId != viewModel.EmployeeId ||
+                !string.Equals(status.Operation, "verify", StringComparison.OrdinalIgnoreCase) ||
+                status.Status != BiometricTaskStatus.Completed)
+            {
+                ModelState.AddModelError(string.Empty, "A valida\u00E7\u00E3o biom\u00E9trica n\u00E3o foi conclu\u00EDda com sucesso. Tente novamente.");
+                viewModel.IsBiometricValidated = false;
+            }
         }
 
         if (!ModelState.IsValid)
@@ -216,6 +248,82 @@ public class DeliveriesController : Controller
         }
 
         return View(viewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ValidateEmployeeBiometrics([FromBody] DeliveryBiometricValidationRequestModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new { error = "Dados da valida\u00E7\u00E3o incompletos." });
+        }
+
+        if (!TryParseFinger(model.Finger, out var finger))
+        {
+            return BadRequest(new { error = "Dedo informado inv\u00E1lido." });
+        }
+
+        try
+        {
+            var taskId = await _biometricEnrollmentService.RequestVerificationAsync(
+                new FingerprintVerificationRequestDto(
+                    model.EmployeeId,
+                    model.AgentId,
+                    finger),
+                HttpContext.RequestAborted);
+
+            return Json(new { success = true, taskId });
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(new { error = ex.Message, errors = ex.Errors });
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetBiometricValidationStatus(Guid taskId)
+    {
+        var status = await _biometricEnrollmentService.GetTaskStatusAsync(taskId, HttpContext.RequestAborted);
+        if (status is null)
+        {
+            return NotFound(new { error = "Tarefa n\u00E3o encontrada." });
+        }
+
+        return Json(new
+        {
+            status = status.Status.ToString(),
+            failureReason = status.FailureReason,
+            employeeId = status.EmployeeId,
+            operation = status.Operation,
+            completedAtUtc = status.CompletedAtUtc
+        });
+    }
+
+    private static bool TryParseFinger(string value, out FingerType finger)
+    {
+        finger = default;
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        if (Enum.TryParse<FingerType>(value, ignoreCase: true, out finger))
+        {
+            return true;
+        }
+
+        if (int.TryParse(value, out var numeric) && Enum.IsDefined(typeof(FingerType), numeric))
+        {
+            finger = (FingerType)numeric;
+            return true;
+        }
+
+        return false;
     }
 
     private async Task PopulateCreateViewModelAsync(DeliveryCreateViewModel viewModel)

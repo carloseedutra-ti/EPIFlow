@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using EPIFlow.Domain.Enums;
 
@@ -10,7 +10,7 @@ public class StockMovementFormViewModel
     public Guid InventoryItemId { get; set; }
 
     [Display(Name = "Tipo de movimentação")]
-    [Required]
+    [Required(ErrorMessage = "Selecione o tipo de movimentação.")]
     public StockMovementType MovementType { get; set; }
 
     [Display(Name = "Quantidade")]
@@ -18,6 +18,7 @@ public class StockMovementFormViewModel
     public int Quantity { get; set; }
 
     [Display(Name = "Referência")]
+    [Required(ErrorMessage = "Informe a referência da movimentação.")]
     [MaxLength(100)]
     public string? Reference { get; set; }
 

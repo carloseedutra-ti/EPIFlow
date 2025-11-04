@@ -60,6 +60,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFzdGVyXFZpZXdzXF9WaWV3U3RhcnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/CarlosEduardoPereira/OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO/Área de Trabalho/Trabalho2025-2/PIE-IV/EPIFlow/EPIFlow.Web/Views/BiometricAgents/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlvbWV0cmljQWdlbnRzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/CarlosEduardoPereira/OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO/Área de Trabalho/Trabalho2025-2/PIE-IV/EPIFlow/EPIFlow.Web/Views/Dashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -138,6 +142,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/CarlosEduardoPereira/OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO/Área de Trabalho/Trabalho2025-2/PIE-IV/EPIFlow/EPIFlow.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CarlosEduardoPereira/OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO/Área de Trabalho/Trabalho2025-2/PIE-IV/EPIFlow/EPIFlow.Web/Views/Users/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CarlosEduardoPereira/OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO/Área de Trabalho/Trabalho2025-2/PIE-IV/EPIFlow/EPIFlow.Web/Views/Users/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CarlosEduardoPereira/OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO/Área de Trabalho/Trabalho2025-2/PIE-IV/EPIFlow/EPIFlow.Web/Views/Users/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/CarlosEduardoPereira/OneDrive - CARBOOX RESENDE INDUSTRIA E COMERCIO/Área de Trabalho/Trabalho2025-2/PIE-IV/EPIFlow/EPIFlow.Web/Views/_ViewImports.cshtml]

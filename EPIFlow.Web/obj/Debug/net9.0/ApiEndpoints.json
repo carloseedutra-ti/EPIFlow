@@ -1,0 +1,50 @@
+[
+  {
+    "ContainingType": "EPIFlow.Web.Controllers.Api.BiometricAgentController",
+    "Method": "Complete",
+    "RelativePath": "api/biometria/agent/complete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "EPIFlow.Web.Models.Biometrics.AgentTaskCompletionRequestModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EPIFlow.Web.Controllers.Api.BiometricAgentController",
+    "Method": "Fail",
+    "RelativePath": "api/biometria/agent/fail",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "EPIFlow.Web.Models.Biometrics.AgentTaskFailureRequestModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EPIFlow.Web.Controllers.Api.BiometricAgentController",
+    "Method": "Poll",
+    "RelativePath": "api/biometria/agent/poll",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "EPIFlow.Web.Models.Biometrics.AgentPollRequestModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

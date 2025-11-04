@@ -23,6 +23,10 @@ public class DeliveryCreateViewModel
     [MaxLength(500)]
     public string? Notes { get; set; }
 
+    public Guid? BiometricValidationTaskId { get; set; }
+
+    public bool IsBiometricValidated { get; set; }
+
     public List<DeliveryItemInputModel> Items { get; set; } = new() { new DeliveryItemInputModel() };
 
     public IEnumerable<SelectListItem> Employees { get; set; } = new List<SelectListItem>();

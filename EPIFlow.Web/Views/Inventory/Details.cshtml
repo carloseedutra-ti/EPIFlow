@@ -2,6 +2,21 @@
 @{
     ViewData["Title"] = $"Estoque - {Model.EpiCode}";
     var movementForm = ViewBag.MovementForm as StockMovementFormViewModel ?? new StockMovementFormViewModel { InventoryItemId = Model.Id };
+    string TranslateMovementType(StockMovementType type) => type switch
+    {
+        StockMovementType.Entry => "Entrada",
+        StockMovementType.Exit => "Saída",
+        StockMovementType.Adjustment => "Ajuste",
+        _ => type.ToString()
+    };
+
+    string TranslateMovementOptionValue(string value)
+    {
+        return Enum.TryParse<StockMovementType>(value, out var parsed)
+            ? TranslateMovementType(parsed)
+            : value;
+    }
+
     var movementOptions = Html.GetEnumSelectList<StockMovementType>()
         .Select(option =>
         {
@@ -9,9 +24,44 @@
             {
                 option.Selected = value == movementForm.MovementType;
             }
+            option.Text = TranslateMovementOptionValue(option.Value ?? option.Text);
             return option;
         })
         .ToList();
+
+    TimeZoneInfo? saoPauloTimeZone = null;
+    try
+    {
+        saoPauloTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+    }
+    catch
+    {
+        try
+        {
+            saoPauloTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
+        }
+        catch
+        {
+            saoPauloTimeZone = null;
+        }
+    }
+
+    DateTime ConvertToDisplayTime(DateTime source)
+    {
+        DateTime utcDate = source.Kind switch
+        {
+            DateTimeKind.Utc => source,
+            DateTimeKind.Local => source.ToUniversalTime(),
+            _ => DateTime.SpecifyKind(source, DateTimeKind.Utc)
+        };
+
+        if (saoPauloTimeZone is not null)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(utcDate, saoPauloTimeZone);
+        }
+
+        return utcDate.ToLocalTime();
+    }
 }
 
 <div class="row g-3">
@@ -111,11 +161,12 @@
                     <tbody>
                         @foreach (var movement in Model.RecentMovements)
                         {
+                            var displayDate = ConvertToDisplayTime(movement.MovementDate);
                             <tr>
-                                <td>@movement.MovementDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@displayDate.ToString("dd/MM/yyyy HH:mm")</td>
                                 <td>
                                     <span class="badge @(movement.MovementType == StockMovementType.Entry ? "bg-success" : movement.MovementType == StockMovementType.Exit ? "bg-danger" : "bg-warning text-dark")">
-                                        @movement.MovementType.ToString()
+                                        @TranslateMovementType(movement.MovementType)
                                     </span>
                                 </td>
                                 <td>@movement.Quantity</td>

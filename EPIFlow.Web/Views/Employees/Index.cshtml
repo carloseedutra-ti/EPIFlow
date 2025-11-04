@@ -8,7 +8,7 @@
         <form method="get" class="d-flex align-items-center gap-2">
             <div class="input-group">
                 <span class="input-group-text"><i class="fas fa-search"></i></span>
-                <input type="search" name="search" value="@Model.SearchTerm" class="form-control" placeholder="Buscar por nome, CPF ou matrícula" />
+                <input type="search" name="search" value="@Model.SearchTerm" class="form-control" placeholder="Buscar por nome, CPF ou matr&iacute;cula" />
             </div>
             <button type="submit" class="btn btn-outline-secondary">
                 Filtrar
@@ -27,11 +27,11 @@
                         <tr>
                             <th>Nome</th>
                             <th>CPF</th>
-                            <th>Matrícula</th>
+                            <th>Matr&iacute;cula</th>
                             <th>Cargo/Setor</th>
-                            <th>Admissão</th>
-                            <th class="text-center">Situação</th>
-                            <th class="text-end">Ações</th>
+                            <th>Admiss&atilde;o</th>
+                            <th class="text-center">Situa&ccedil;&atilde;o</th>
+                            <th class="text-end">A&ccedil;&otilde;es</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,6 +58,12 @@
                                 </td>
                                 <td class="text-end">
                                     <div class="btn-group">
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-secondary js-open-biometrics"
+                                                data-employee-id="@employee.Id"
+                                                data-employee-name="@employee.Name">
+                                            <i class="fas fa-fingerprint"></i> Digitais
+                                        </button>
                                         <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-pen"></i>
                                         </a>
@@ -83,3 +89,394 @@
         }
     </div>
 </div>
+
+<form id="biometric-antiforgery" class="d-none">
+    @Html.AntiForgeryToken()
+</form>
+
+@section Scripts {
+    <script>
+        (() => {
+            if (typeof Swal === 'undefined') {
+                return;
+            }
+
+            const toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+
+            const defaultAgentId = '@(User.FindFirst("default_agent_id")?.Value ?? string.Empty)'.trim().toLowerCase();
+
+            const antiforgeryToken = () => document
+                .querySelector('#biometric-antiforgery input[name="__RequestVerificationToken"]')
+                ?.value ?? '';
+
+            const guidEquals = (a, b) => {
+                const na = typeof a === 'string' ? a.trim().toLowerCase() : '';
+                const nb = typeof b === 'string' ? b.trim().toLowerCase() : '';
+                return na && nb && na === nb;
+            };
+
+            const formatDateTime = (value) => {
+                if (!value) {
+                    return 'Sem capturas';
+                }
+
+                try {
+                    const date = new Date(value);
+                    if (Number.isNaN(date.getTime())) {
+                        return 'Sem capturas';
+                    }
+                    return new Intl.DateTimeFormat('pt-BR', {
+                        dateStyle: 'short',
+                        timeStyle: 'short'
+                    }).format(date);
+                } catch {
+                    return 'Sem capturas';
+                }
+            };
+
+            const statusBadge = (statusValue, statusLabel) => {
+                const value = (statusValue ?? '').toLowerCase();
+                let css = 'bg-secondary';
+
+                if (value === 'pending' || value === 'inprogress') {
+                    css = 'bg-warning text-dark';
+                } else if (value === 'completed' || value === 'success') {
+                    css = 'bg-success';
+                } else if (value === 'failed' || value === 'error') {
+                    css = 'bg-danger';
+                }
+
+                return `<span class="badge ${css}">${statusLabel || 'Sem captura'}</span>`;
+            };
+
+            const fetchJson = async (url, options = {}) => {
+                const response = await fetch(url, {
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        ...(options.headers ?? {})
+                    },
+                    ...options
+                });
+
+                if (!response.ok) {
+                    const payload = await response.json().catch(() => null);
+                    const error = payload?.error || 'Falha ao processar a solicita\u00E7\u00E3o.';
+                    throw new Error(error);
+                }
+
+                return await response.json();
+            };
+
+            const buildAgentOptions = (agents, selectedAgentId) => {
+                const options = agents.map(agent => {
+                    const value = agent.id ?? '';
+                    const isDefault = defaultAgentId && guidEquals(defaultAgentId, value);
+                    const disabled = !agent.isOnline && !isDefault;
+                    const selected = selectedAgentId && guidEquals(selectedAgentId, value);
+                    const statusSuffix = agent.isOnline ? ' (online)' : ' (offline)';
+                    return `<option value="${value}" ${selected ? 'selected' : ''} ${disabled ? 'disabled' : ''}>${agent.name}${statusSuffix}</option>`;
+                }).join('');
+
+                return `<option value="">Selecione o agente</option>${options}`;
+            };
+
+            const buildFingerRows = (fingers, hasAgents) => {
+                return fingers.map(finger => {
+                    const rowBusy = finger.statusValue === 'Pending' || finger.statusValue === 'InProgress';
+                    const captureDisabled = rowBusy || !hasAgents;
+                    const canTest = finger.canTest && hasAgents;
+                    const testDisabled = rowBusy || !canTest;
+                    const updatedText = formatDateTime(finger.updatedAtUtc);
+
+                    return `
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">${finger.displayName}</div>
+                                <div class="text-muted small">Atualizado: ${updatedText}</div>
+                            </td>
+                            <td>${statusBadge(finger.statusValue, finger.statusLabel)}</td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-primary js-request-capture"
+                                            data-finger="${finger.fingerKey}"
+                                            ${captureDisabled ? 'disabled' : ''}>
+                                        <i class="fas fa-fingerprint me-1"></i>${captureDisabled ? 'Em andamento' : 'Cadastrar'}
+                                    </button>
+                                    ${canTest ? `
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-success js-request-test"
+                                                data-finger="${finger.fingerKey}"
+                                                ${testDisabled ? 'disabled' : ''}>
+                                            <i class="fas fa-check me-1"></i>Testar
+                                        </button>` : ''}
+                                </div>
+                            </td>
+                        </tr>`;
+                }).join('');
+            };
+
+            const renderModal = (data, selectedAgentId) => {
+                const popup = Swal.getPopup();
+                if (!popup) {
+                    return;
+                }
+
+                const container = popup.querySelector('.js-biometric-modal');
+                if (!container) {
+                    return;
+                }
+
+                const agents = Array.isArray(data.agents) ? data.agents : [];
+                const fingers = Array.isArray(data.fingers) ? data.fingers : [];
+                const hasAgents = agents.length > 0;
+
+                const preferredAgent = (() => {
+                    if (selectedAgentId) {
+                        return selectedAgentId;
+                    }
+
+                if (defaultAgentId && agents.some(agent => guidEquals(agent.id, defaultAgentId))) {
+                        return agents.find(agent => guidEquals(agent.id, defaultAgentId))?.id ?? '';
+                    }
+
+                    const onlineAgent = agents.find(agent => agent.isOnline);
+                    return onlineAgent?.id ?? '';
+                })();
+
+                container.innerHTML = `
+                    <div class="mb-3">
+                        <label class="form-label">Agente biom\u00E9trico</label>
+                        <div class="input-group">
+                            <select class="form-select" id="biometric-agent-select">
+                                ${buildAgentOptions(agents, preferredAgent)}
+                            </select>
+                            <button type="button" class="btn btn-outline-secondary" id="biometric-refresh" title="Atualizar lista">
+                                <i class="fas fa-rotate"></i>
+                            </button>
+                        </div>
+                        ${hasAgents ? '' : '<div class="text-danger small mt-2">Nenhum agente dispon\u00EDvel para esta empresa.</div>'}
+                    </div>
+                    <div class="d-flex justify-content-end mb-3">
+                        <button type="button" class="btn btn-outline-danger" id="biometric-clear">
+                            <i class="fas fa-trash-alt me-1"></i> Limpar digitais
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Dedo</th>
+                                    <th>Status</th>
+                                    <th class="text-end">A\u00E7\u00F5es</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${buildFingerRows(fingers, hasAgents)}
+                            </tbody>
+                        </table>
+                    </div>`;
+
+                const agentSelect = container.querySelector('#biometric-agent-select');
+                const refreshButton = container.querySelector('#biometric-refresh');
+                const clearButton = container.querySelector('#biometric-clear');
+                const captureButtons = container.querySelectorAll('.js-request-capture');
+                const testButtons = container.querySelectorAll('.js-request-test');
+
+                const getSelectedAgent = () => agentSelect?.value ?? '';
+
+                if (refreshButton) {
+                    refreshButton.addEventListener('click', async () => {
+                        if (refreshButton.disabled) {
+                            return;
+                        }
+
+                        refreshButton.disabled = true;
+                        refreshButton.innerHTML = '<i class="fas fa-rotate fa-spin"></i>';
+
+                        try {
+                            const overview = await fetchJson(`/biometria/colaboradores/${data.employeeId}/overview`);
+                            renderModal(overview, getSelectedAgent());
+                            toast.fire({ icon: 'success', title: 'Lista atualizada.' });
+                        }
+                        catch (error) {
+                            toast.fire({ icon: 'error', title: error.message || 'Falha ao atualizar a lista.' });
+                        }
+                        finally {
+                            refreshButton.disabled = false;
+                            refreshButton.innerHTML = '<i class="fas fa-rotate"></i>';
+                        }
+                    });
+                }
+
+                if (clearButton) {
+                    clearButton.addEventListener('click', async () => {
+                        const token = antiforgeryToken();
+                        if (!token) {
+                            toast.fire({ icon: 'error', title: 'Token de seguran\u00E7a n\u00E3o encontrado.' });
+                            return;
+                        }
+
+                        const confirmation = await Swal.fire({
+                            icon: 'warning',
+                            title: 'Remover digitais?',
+                            text: 'Essa a\u00E7\u00E3o remove todas as digitais do colaborador.',
+                            showCancelButton: true,
+                            confirmButtonText: 'Remover',
+                            cancelButtonText: 'Cancelar',
+                            focusCancel: true,
+                            showLoaderOnConfirm: true,
+                            allowOutsideClick: () => !Swal.isLoading(),
+                            preConfirm: async () => {
+                                try {
+                                    await fetchJson(`/biometria/colaboradores/${data.employeeId}/enrollments`, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'RequestVerificationToken': token
+                                        }
+                                    });
+                                    return true;
+                                }
+                                catch (error) {
+                                    Swal.showValidationMessage(error.message || 'Falha ao remover as digitais.');
+                                    return false;
+                                }
+                            }
+                        });
+
+                        if (confirmation.isConfirmed) {
+                            const overview = await fetchJson(`/biometria/colaboradores/${data.employeeId}/overview`);
+                            renderModal(overview, getSelectedAgent());
+                            toast.fire({ icon: 'success', title: 'Digitais removidas.' });
+                        }
+                    });
+                }
+
+                captureButtons.forEach(button => {
+                    button.addEventListener('click', async () => {
+                        const agentId = getSelectedAgent();
+                        if (!agentId) {
+                            toast.fire({ icon: 'warning', title: 'Selecione um agente para iniciar a captura.' });
+                            return;
+                        }
+
+                        const token = antiforgeryToken();
+                        if (!token) {
+                            toast.fire({ icon: 'error', title: 'Token de seguran\u00E7a n\u00E3o encontrado.' });
+                            return;
+                        }
+
+                        try {
+                            const rawFinger = (button.dataset.finger ?? '').trim();
+                            if (!rawFinger) {
+                                throw new Error('Dedo informado inv\u00E1lido.');
+                            }
+
+                            await fetchJson(`/biometria/colaboradores/${data.employeeId}/enroll`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'RequestVerificationToken': token
+                                },
+                                body: JSON.stringify({
+                                    agentId,
+                                    finger: rawFinger
+                                })
+                            });
+
+                            toast.fire({ icon: 'success', title: 'Captura iniciada.' });
+                            const overview = await fetchJson(`/biometria/colaboradores/${data.employeeId}/overview`);
+                            renderModal(overview, agentId);
+                        }
+                        catch (error) {
+                            toast.fire({ icon: 'error', title: error.message || 'Falha ao iniciar a captura.' });
+                        }
+                    });
+                });
+
+                testButtons.forEach(button => {
+                    button.addEventListener('click', async () => {
+                        const agentId = getSelectedAgent();
+                        if (!agentId) {
+                            toast.fire({ icon: 'warning', title: 'Selecione um agente para realizar o teste.' });
+                            return;
+                        }
+
+                        const token = antiforgeryToken();
+                        if (!token) {
+                            toast.fire({ icon: 'error', title: 'Token de seguran\u00E7a n\u00E3o encontrado.' });
+                            return;
+                        }
+
+                        try {
+                            const rawFinger = (button.dataset.finger ?? '').trim();
+                            if (!rawFinger) {
+                                throw new Error('Dedo informado inv\u00E1lido.');
+                            }
+
+                            await fetchJson(`/biometria/colaboradores/${data.employeeId}/test`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'RequestVerificationToken': token
+                                },
+                                body: JSON.stringify({
+                                    agentId,
+                                    finger: rawFinger
+                                })
+                            });
+
+                            toast.fire({ icon: 'success', title: 'Teste solicitado.' });
+                            const overview = await fetchJson(`/biometria/colaboradores/${data.employeeId}/overview`);
+                            renderModal(overview, agentId);
+                        }
+                        catch (error) {
+                            toast.fire({ icon: 'error', title: error.message || 'Falha ao solicitar o teste.' });
+                        }
+                    });
+                });
+            };
+
+            const openBiometricManager = async (employeeId, employeeName) => {
+                try {
+                    const overview = await fetchJson(`/biometria/colaboradores/${employeeId}/overview`);
+
+                    await Swal.fire({
+                        title: `Gerenciar digitais - ${employeeName}`,
+                        html: '<div class="js-biometric-modal"></div>',
+                        width: 720,
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            renderModal(overview, defaultAgentId);
+                        }
+                    });
+                }
+                catch (error) {
+                    toast.fire({ icon: 'error', title: error.message || 'Falha ao carregar informa\u00E7\u00F5es biom\u00E9tricas.' });
+                }
+            };
+
+            document.querySelectorAll('.js-open-biometrics').forEach(button => {
+                button.addEventListener('click', () => {
+                    const employeeId = button.dataset.employeeId;
+                    const employeeName = button.dataset.employeeName ?? 'Colaborador';
+
+                    if (!employeeId) {
+                        toast.fire({ icon: 'error', title: 'Identificador do colaborador n\u00E3o encontrado.' });
+                        return;
+                    }
+
+                    openBiometricManager(employeeId, employeeName);
+                });
+            });
+        })();
+    </script>
+}
